@@ -1,0 +1,66 @@
+@model OptiFabricMVC.Application.ViewModels.ProductsVM.ListProductVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+@if (User.IsInRole("Manager"))
+{
+    <p>
+        <a asp-action="AddProduct">Dodaj nowy produkt</a>
+    </p>
+}
+<form asp-action="Index" asp-controller="Product" method="get">
+    <div class="row">
+        <input type="text" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
+        <input type="submit" value="Wyszukaj"/>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Numer rysunku</th>
+                <th>Materiał</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var product in Model.ProductsListVM)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.DrawingNumber</td>
+                    <td>@product.Material</td>
+                    <td>
+                    @Html.ActionLink("Szczegóły", "Details", new { id = product.Id })
+                    @if (User.IsInRole("Manager"))
+                    {
+                        @Html.ActionLink("Edytuj", "Edit", new { id = product.Id })
+                        @Html.ActionLink("Usuń", "Delete", new { id = product.Id })
+                    }
+                    </td>
+                </tr>
+            }
+            </tbody>
+
+        </table>
+    </div>
+    <div class="row">
+        <ul class="pagination">
+            @for (int i = 1; i <= Math.Ceiling(Model.Count / (double)Model.PageSize); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNo="@i"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-searchString="@Model.SearchString">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</form>

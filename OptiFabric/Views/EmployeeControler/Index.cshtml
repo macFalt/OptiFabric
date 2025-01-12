@@ -1,0 +1,65 @@
+@model OptiFabricMVC.Application.ViewModels.EmployeeVM.ListEmployeeVM
+
+@{
+    ViewBag.Title = "Baza pracowników";
+    Layout = "_Layout";
+}
+
+<h1>Baza pracowników</h1>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        <a asp-action="AddEmployee">Dodaj nowego pracownika</a>
+    </p>
+}
+<form asp-action="Index" asp-controller="EmployeeControler" method="get">
+    <div class="row">
+        <input type="text" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
+        <input type="submit" value="Wyszukaj"/>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Imie</th>
+                <th>Nazwisko</th>
+                <th>Stanowisko</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var employee in Model.EmployeeForListVms)
+            {
+                <tr>
+                    <td>@employee.Name</td>
+                    <td>@employee.Surname</td>
+                    <td>@employee.Position</td>
+                    <td>
+                        @Html.ActionLink("Edytuj", "EditEmployee", new { id = employee.Id }) 
+                        @Html.ActionLink("Szczegóły", "Details", new { id = employee.Id })
+                        @Html.ActionLink("Usuń", "Delete", new { id = employee.Id })
+                        @Html.ActionLink("Godziny pracy", "WorkingHours", new { id = employee.Id })
+                    </td>
+                </tr>
+            }
+            </tbody>
+
+        </table>
+    </div>
+    <div class="row">
+        <ul class="pagination">
+            @for (int i = 1; i <= Math.Ceiling(Model.Count / (double)Model.PageSize); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNo="@i"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-searchString="@Model.SearchString">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</form>

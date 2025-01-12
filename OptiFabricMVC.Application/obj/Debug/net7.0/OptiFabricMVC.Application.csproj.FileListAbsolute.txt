@@ -1,0 +1,15 @@
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/bin/Debug/net7.0/OptiFabricMVC.Application.deps.json
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/bin/Debug/net7.0/OptiFabricMVC.Application.dll
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/bin/Debug/net7.0/OptiFabricMVC.Application.pdb
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/bin/Debug/net7.0/OptiFabricMVC.Domain.dll
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/bin/Debug/net7.0/OptiFabricMVC.Domain.pdb
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/OptiFabricMVC.Application.csproj.AssemblyReference.cache
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/OptiFabricMVC.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/OptiFabricMVC.Application.AssemblyInfoInputs.cache
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/OptiFabricMVC.Application.AssemblyInfo.cs
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/OptiFabricMVC.Application.csproj.CoreCompileInputs.cache
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/OptiFabricMVC.Application.csproj.CopyComplete
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/OptiFabricMVC.Application.dll
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/refint/OptiFabricMVC.Application.dll
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/OptiFabricMVC.Application.pdb
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/ref/OptiFabricMVC.Application.dll

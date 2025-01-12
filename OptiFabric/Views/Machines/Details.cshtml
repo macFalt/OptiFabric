@@ -1,0 +1,28 @@
+@model OptiFabricMVC.Application.ViewModels.MachinesVM.MachineDetailsVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nazwa</th>
+            <th>Typ</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>@Html.DisplayFor(modelNv => modelNv.Name)</td>
+            <td>@Html.DisplayFor(modelNv => modelNv.Type)</td>
+            <td>@Html.DisplayFor(modelNv => modelNv.Status)</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,27 @@
+@model OptiFabricMVC.Application.ViewModels.EmployeeVM.EmployeeDetailsVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Imie</th>
+                <th>Nazwisko</th>
+                <th>Pozycja</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(modelNv => modelNv.Name)</td>
+                <td>@Html.DisplayFor(modelNv => modelNv.Surname)</td>
+                <td>@Html.DisplayFor(modelNv => modelNv.Position)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

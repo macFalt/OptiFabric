@@ -1,0 +1,67 @@
+@using OptiFabricMVC.Domain.Model
+@model OptiFabricMVC.Application.ViewModels.OrdersVM.AddNewOrderVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddOrder">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label">Data złożenia zamówinia</label>
+                <input asp-for="OrderDate" class="form-control"/>
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeadLine" class="control-label">Termin realizacji</label>
+                <input asp-for="DeadLine" class="form-control"/>
+                <span asp-validation-for="DeadLine" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompanyName" class="control-label">Nazwa firmy</label>
+                <input asp-for="CompanyName" class="form-control"/>
+                <span asp-validation-for="CompanyName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalAmount" class="control-label">Kwota zamówienia</label>
+                <input asp-for="TotalAmount" class="form-control"/>
+                <span asp-validation-for="TotalAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalAmount" class="control-label">Kwota zamówienia</label>
+                <input asp-for="TotalAmount" class="form-control"/>
+                <span asp-validation-for="TotalAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label">Status</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="">-- Wybierz status --</option>
+                    @foreach (var status in Enum.GetValues(typeof(OrderStatus)))
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+                @* <div id="products"> *@
+                @*     @for (var i = 0; i < Model.Products.Count; i++) *@
+                @*     { *@
+                @*         <div> *@
+                @*             <label>Product Name:</label> *@
+                @*             <input asp-for="Products[@i].Name" /> *@
+                @*             <label>Quantity:</label> *@
+                @*             <input asp-for="Products[@i].Quantity" type="number" /> *@
+                @*             <input type="hidden" asp-for="Products[@i].Id" /> *@
+                @*         </div> *@
+                @*     } *@
+                @* </div> *@
+            <div class="form-group">
+                <input type="submit" value="Dodaj" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>

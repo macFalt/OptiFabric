@@ -1,0 +1,74 @@
+@using OptiFabricMVC.Application.ViewModels.JobVM
+@using OptiFabricMVC.Domain.Model
+@model OptiFabricMVC.Application.ViewModels.JobVM.AddNewJobVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Dodaj zlecenie</h2>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddJob">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Nazwa</label>
+                <input asp-for="Description" class="form-control"/>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequiredQuantity" class="control-label">Ilość sztuk potrzebnych</label>
+                <input asp-for="RequiredQuantity" class="form-control"/>
+                <span asp-validation-for="RequiredQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalCompletedQuantity" class="control-label">Ilość wykonanych sztuk</label>
+                <input asp-for="TotalCompletedQuantity" class="form-control"/>
+                <span asp-validation-for="TotalCompletedQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalMissingQuantity" class="control-label">Ilość braków</label>
+                <input asp-for="TotalMissingQuantity" class="form-control"/>
+                <span asp-validation-for="TotalMissingQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedAt" class="control-label">Data utworzenia zlecenia</label>
+                <input asp-for="CreatedAt" class="form-control"/>
+                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompletedAt" class="control-label">Data ukończenia zlecenia</label>
+                <input asp-for="CompletedAt" class="form-control"/>
+                <span asp-validation-for="CompletedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsCompleted" class="control-label">Status</label>
+                <select asp-for="IsCompleted" class="form-control">
+                    <option value="">-- Wybierz status --</option>
+                    @foreach (var status in Enum.GetValues(typeof(JobStatus)))
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </select>
+                <span asp-validation-for="IsCompleted" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SelectedProductId">Product</label>
+                <select asp-for="SelectedProductId" class="form-control">
+                    @foreach (var product in Model.Products)
+                    {
+                        <option value="@product.Id">@product.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="SelectedProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Dodaj" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+
+</div>

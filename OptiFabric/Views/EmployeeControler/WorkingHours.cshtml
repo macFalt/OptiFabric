@@ -1,0 +1,54 @@
+@model OptiFabricMVC.Application.ViewModels.EmployeeVM.ListWorkingHoursVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<form asp-action="WorkingHours" asp-controller="EmployeeControler" method="get">
+    <div class="row">
+        <div>
+            @* <label for="searchString">Szukaj daty:</label> *@
+            <input type="date" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
+            <input type="submit" value="Wyszukaj"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Rozpoczęcie zmiany</th>
+                <th>Zakończenie zmiany</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var shift in Model.WorkingHours)
+            {
+                <tr>
+                    <td>@shift.StartTime</td>
+                    <td>@shift.EndTime</td>
+                </tr>
+            }
+            </tbody>
+
+        </table>
+    </div>
+    <div class="row">
+        <ul class="pagination">
+            @for (int i = 1; i <= Math.Ceiling(Model.Count / (double)Model.PageSize); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNo="@i"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-searchString="@Model.SearchString">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</form>

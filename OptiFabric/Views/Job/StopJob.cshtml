@@ -1,0 +1,34 @@
+@model OptiFabricMVC.Application.ViewModels.JobVM.EndJobEmployeeVM
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Dodaj zlecenie</h2>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="StopJob">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmployeeComments" class="control-label">Komentarz</label>
+                <input asp-for="EmployeeComments" class="form-control"/>
+                <span asp-validation-for="EmployeeComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompletedQuantity" class="control-label">Ilość wykonanych sztuk</label>
+                <input asp-for="CompletedQuantity" class="form-control"/>
+                <span asp-validation-for="CompletedQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MissingQuantity" class="control-label">Ilość braków</label>
+                <input asp-for="MissingQuantity" class="form-control"/>
+                <span asp-validation-for="MissingQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zakończ" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+
+</div>

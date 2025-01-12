@@ -1,0 +1,100 @@
+@model OptiFabricMVC.Application.ViewModels.JobVM.ListJobsVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+@if (User.IsInRole("Manager"))
+{
+    <p>
+        <a asp-action="AddJob">Dodaj nowe zlecenie</a>
+    </p>
+}
+<form asp-action="Index" asp-controller="Job" method="get">
+    <div class="row">
+        <input type="text" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
+        <input type="submit" value="Wyszukaj"/>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Opis zlecenia</th>
+                <th>Ilość sztuk potrzebnych</th>
+                <th>Ilość wykonanych sztuk</th>
+                <th>Ilość braków</th>
+                <th>Status wykonania</th>
+                <th>Data utworzenia zlecenia</th>
+                <th>Data zakończenia zlecenia</th>
+                <th>Numer rysunku</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var job in Model.JobsForList)
+            {
+                <tr>
+                    <td>@job.Description</td>
+                    <td>@job.RequiredQuantity</td>
+                    <td>@job.TotalCompletedQuantity</td>
+                    <td>@job.TotalMissingQuantity</td>
+                    <td>@job.IsCompleted</td>
+                    <td>@job.CreatedAt</td>
+                    <td>@job.CompletedAt</td>
+                    <td>@job.Product.DrawingNumber</td>
+                    <td>
+                        @if (job.TotalCompletedQuantity >= job.RequiredQuantity)
+                        {
+                            <span>Wykonane</span>
+                        }
+                        else
+                        {
+                            @if (job.IsCompleted == OptiFabricMVC.Domain.Model.JobStatus.NotStarted)
+                            {
+                                @Html.ActionLink("Rozpocznij zlecenie", "StartJob", new { id = job.Id })
+                            }
+                            else if (job.ActivEmployeeJob == true)
+                            {
+                                @Html.ActionLink("Zakończ", "StopJob", new { id = job.Id })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Rozpocznij", "StartJob", new { id = job.Id })
+                            }
+                        }
+
+
+                    </td>
+                    @* <td> *@
+                    @*     @Html.ActionLink("Rozpocznij zlecenie", "StartJob", new { id = job.Id }) *@
+                    @*     $1$ @if (User.IsInRole("Manager")) #1# *@
+                    @*     $1$ { #1# *@
+                    @*     $1$     @Html.ActionLink("Edytuj", "EditMachine", new { id = machines.Id }) #1# *@
+                    @*     $1$     @Html.ActionLink("Usuń", "Delete", new { id = machines.Id }) #1# *@
+                    @*     $1$ } #1# *@
+                    @* </td> *@
+                </tr>
+            }
+            </tbody>
+
+        </table>
+    </div>
+    <div class="row">
+        <ul class="pagination">
+            @for (int i = 1; i <= Math.Ceiling(Model.Count / (double)Model.PageSize); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNo="@i"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-searchString="@Model.SearchString">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</form>

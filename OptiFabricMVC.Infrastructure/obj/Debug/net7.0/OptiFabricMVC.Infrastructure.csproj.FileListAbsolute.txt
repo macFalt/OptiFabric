@@ -1,0 +1,17 @@
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/bin/Debug/net7.0/OptiFabricMVC.Infrastructure.deps.json
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/bin/Debug/net7.0/OptiFabricMVC.Infrastructure.runtimeconfig.json
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/bin/Debug/net7.0/OptiFabricMVC.Infrastructure.dll
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/bin/Debug/net7.0/OptiFabricMVC.Infrastructure.pdb
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/bin/Debug/net7.0/OptiFabricMVC.Domain.dll
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/bin/Debug/net7.0/OptiFabricMVC.Domain.pdb
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/OptiFabricMVC.Infrastructure.csproj.AssemblyReference.cache
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/OptiFabricMVC.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/OptiFabricMVC.Infrastructure.AssemblyInfoInputs.cache
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/OptiFabricMVC.Infrastructure.AssemblyInfo.cs
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/OptiFabricMVC.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/OptiFabricMVC.Infrastructure.csproj.CopyComplete
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/OptiFabricMVC.Infrastructure.dll
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/refint/OptiFabricMVC.Infrastructure.dll
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/OptiFabricMVC.Infrastructure.pdb
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/OptiFabricMVC.Infrastructure.genruntimeconfig.cache
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/obj/Debug/net7.0/ref/OptiFabricMVC.Infrastructure.dll

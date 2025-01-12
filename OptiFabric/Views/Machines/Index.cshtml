@@ -1,0 +1,67 @@
+@model OptiFabricMVC.Application.ViewModels.MachinesVM.ListMachinesVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+@if (User.IsInRole("Manager"))
+{
+    <p>
+        <a asp-action="AddMachine">Dodaj nową maszyne</a>
+    </p>
+}
+<form asp-action="Index" asp-controller="Machines" method="get">
+    <div class="row">
+        <input type="text" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
+        <input type="submit" value="Wyszukaj"/>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Typ</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var machines in Model.MachinesForListVms)
+            {
+                <tr>
+                    <td>@machines.Name</td>
+                    <td>@machines.Type</td>
+                    <td>@machines.Status</td>
+                    <td>
+                    @Html.ActionLink("Szczegóły", "Details", new { id = machines.Id })
+                    @if (User.IsInRole("Manager"))
+                    {
+                        @Html.ActionLink("Edytuj", "EditMachine", new { id = machines.Id })
+                        @Html.ActionLink("Usuń", "Delete", new { id = machines.Id })
+                    }
+                    </td>
+                </tr>
+            }
+            </tbody>
+
+        </table>
+    </div>
+    <div class="row">
+        <ul class="pagination">
+            @for (int i = 1; i <= Math.Ceiling(Model.Count / (double)Model.PageSize); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNo="@i"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-searchString="@Model.SearchString">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</form>
