@@ -9,6 +9,8 @@ public class JobEmployee
     public int CompletedQuantity { get; set; } // Ilość wykonanych sztuk
         
     public int MissingQuantity { get; set; } // Ilość braków
+
+    public bool IsActive { get; set; }
     
     public DateTime StartTime { get; set; } 
     

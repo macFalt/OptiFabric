@@ -1,5 +1,7 @@
 @model OptiFabricMVC.Application.ViewModels.JobVM.ListJobsVM
 
+
+
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
@@ -33,8 +35,12 @@
             </tr>
             </thead>
             <tbody>
+
+            
             @foreach (var job in Model.JobsForList)
             {
+                var isCurrentUserAssigned = Model.JobEmployees.Any(je => je.CurrentWorkerId == ViewBag.CurrentUserId && je.IsActive && je.JobId==job.Id ); //&& je.IsActive
+
                 <tr>
                     <td>@job.Description</td>
                     <td>@job.RequiredQuantity</td>
@@ -51,30 +57,26 @@
                         }
                         else
                         {
-                            @if (job.IsCompleted == OptiFabricMVC.Domain.Model.JobStatus.NotStarted)
-                            {
-                                @Html.ActionLink("Rozpocznij zlecenie", "StartJob", new { id = job.Id })
-                            }
-                            else if (job.ActivEmployeeJob == true)
+                            @if (isCurrentUserAssigned)
                             {
                                 @Html.ActionLink("Zakończ", "StopJob", new { id = job.Id })
                             }
                             else
                             {
                                 @Html.ActionLink("Rozpocznij", "StartJob", new { id = job.Id })
+
                             }
+
                         }
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <td>
+                                @Html.ActionLink("Edytuj", "EditJob", new { id = job.Id })
+                                @Html.ActionLink("Szczegóły", "ListJobEmployee", new { id = job.Id })
 
-
+                            </td>
+                        }
                     </td>
-                    @* <td> *@
-                    @*     @Html.ActionLink("Rozpocznij zlecenie", "StartJob", new { id = job.Id }) *@
-                    @*     $1$ @if (User.IsInRole("Manager")) #1# *@
-                    @*     $1$ { #1# *@
-                    @*     $1$     @Html.ActionLink("Edytuj", "EditMachine", new { id = machines.Id }) #1# *@
-                    @*     $1$     @Html.ActionLink("Usuń", "Delete", new { id = machines.Id }) #1# *@
-                    @*     $1$ } #1# *@
-                    @* </td> *@
                 </tr>
             }
             </tbody>

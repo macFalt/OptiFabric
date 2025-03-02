@@ -1,0 +1,44 @@
+@model List<OptiFabricMVC.Application.ViewModels.JobVM.DetailsJobEmployeeVM>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+<form asp-action="ListJobEmployee" asp-controller="Job" method="get">
+<div class="row">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Imie i nazwisko pracownika</th>
+            <th>Data utworzenia </th>
+            <th>Data zakończenia </th>
+            <th>Komentarz </th>
+            <th>Ilość sztuk dobrych </th>
+            <th>Ilość braków </th>
+            
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+            
+        @foreach (var job in Model)
+        {
+            
+            <tr>
+                <td>@job.FullName</td>
+                <td>@job.StartTime</td>
+                <td>@job.EndTime</td>
+                <td>@job.EmployeeComments</td>
+                <td>@job.CompletedQuantity</td>
+                <td>@job.MissingQuantity</td>
+                <td>@Html.ActionLink("Edytuj","EditJobEmployee",new {id=job.Id,jobId=job.JobId})</td>
+            </tr>
+        }
+        </tbody>
+
+    </table>
+</div>
+</form>

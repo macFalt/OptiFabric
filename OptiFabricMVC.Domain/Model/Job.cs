@@ -21,12 +21,11 @@ public class Job
     
     public int ProductId { get; set; } // Klucz obcy do produktu
     public Product Product { get; set; } // Produkt, do którego przypisane jest zadanie
+    
+    
 
     public ICollection<Operation> Operations { get; set; }
     public ICollection<JobEmployee> JobEmployees { get; set; }
-        
-
-    
     
 }
 

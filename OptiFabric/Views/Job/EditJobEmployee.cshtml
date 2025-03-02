@@ -1,0 +1,32 @@
+@model OptiFabricMVC.Application.ViewModels.JobVM.DetailsJobEmployeeVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditJobEmployee">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="JobId" />
+            <div class="form-group">
+                <label asp-for="CompletedQuantity" class="control-label">Ilość wykonanych sztuk</label>
+                <input asp-for="CompletedQuantity" class="form-control"/>
+                <span asp-validation-for="CompletedQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MissingQuantity" class="control-label">Ilość braków</label>
+                <input asp-for="MissingQuantity" class="form-control"/>
+                <span asp-validation-for="MissingQuantity" class="text-danger"></span>
+            </div>
+ 
+            <div class="form-group">
+                <input type="submit" value="Zakończ" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+
+</div>

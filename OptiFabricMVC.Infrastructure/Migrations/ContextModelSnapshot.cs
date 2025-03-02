@@ -312,6 +312,9 @@ namespace OptiFabricMVC.Infrastructure.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 

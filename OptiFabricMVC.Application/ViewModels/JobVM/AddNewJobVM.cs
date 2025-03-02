@@ -26,7 +26,12 @@ public class AddNewJobVM: IMapFrom<Job>
     
     public ProductDetailsVM Product { get; set; } // Produkt, do którego przypisane jest zadanie
 
-    public int SelectedProductId { get; set; }    
+    public int ProductId { get; set; }    //SelectedProductId
+    
+    
+    
+    
+    
     
     public void ConfigureMapping(Profile profile)
     {

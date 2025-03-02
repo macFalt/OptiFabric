@@ -8,7 +8,7 @@ namespace OptiFabricMVC.Application.ViewModels.JobVM;
 public class JobsForListVM: IMapFrom<Job>
 {
     public int Id { get; set; } // Unikalny identyfikator zadania
-        
+    
     public string Description { get; set; } // Opis zadania
     
     public JobStatus IsCompleted { get; set; } // Status wykonania zadania
@@ -24,7 +24,15 @@ public class JobsForListVM: IMapFrom<Job>
     
     public Product Product { get; set; } // Produkt, do którego przypisane jest zadanie
 
-    public bool ActivEmployeeJob { get; set; }
+    // public bool ActivEmployeeJob { get; set; }
+    //
+    // public string UserId { get; set; }
+
+    
+    //public List<JobEmployee> JobEmployees { get; set; }
+
+    
+    
 
     
     public void ConfigureMapping(Profile profile)

@@ -1,4 +1,4 @@
-@using OptiFabricMVC.Application.ViewModels.JobVM
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using OptiFabricMVC.Domain.Model
 @model OptiFabricMVC.Application.ViewModels.JobVM.AddNewJobVM
 
@@ -11,7 +11,7 @@
 <hr/>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddJob">
+        <form asp-action="EditJob">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label">Nazwa</label>
