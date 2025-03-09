@@ -24,7 +24,8 @@ public class ShiftService: IShiftService
         {
             UserId = UserId,
             StartTime = startShiftData,
-            isActive = true
+            isActive = true,
+            EndTime = null
 
         };
         

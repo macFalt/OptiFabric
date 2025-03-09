@@ -5,6 +5,22 @@
       "PackagePath": "staticwebassets/OptiFabric.bundle.scp.css"
     },
     {
+      "Id": "/Users/macbook/RiderProjects/OptiFabric/OptiFabric/wwwroot/.DS_Store",
+      "PackagePath": "staticwebassets/.DS_Store"
+    },
+    {
+      "Id": "/Users/macbook/RiderProjects/OptiFabric/OptiFabric/wwwroot/Content/.DS_Store",
+      "PackagePath": "staticwebassets/Content/.DS_Store"
+    },
+    {
+      "Id": "/Users/macbook/RiderProjects/OptiFabric/OptiFabric/wwwroot/Content/Drawings/.DS_Store",
+      "PackagePath": "staticwebassets/Content/Drawings/.DS_Store"
+    },
+    {
+      "Id": "/Users/macbook/RiderProjects/OptiFabric/OptiFabric/wwwroot/Content/Drawings/192.192.00.1.png",
+      "PackagePath": "staticwebassets/Content/Drawings/192.192.00.1.png"
+    },
+    {
       "Id": "/Users/macbook/RiderProjects/OptiFabric/OptiFabric/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },

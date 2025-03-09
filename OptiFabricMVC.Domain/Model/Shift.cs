@@ -6,7 +6,7 @@ public class Shift
     
     public DateTime StartTime { get; set; } 
     
-    public DateTime EndTime { get; set; }
+    public DateTime? EndTime { get; set; }
 
     public bool isActive { get; set; }
 

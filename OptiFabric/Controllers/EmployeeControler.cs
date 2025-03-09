@@ -89,4 +89,10 @@ public class EmployeeControler : Controller
         var shift = _shiftService.GetAllShifts(id,pageSize, pageNo,searchString);
         return View(shift);
     }
+
+    public IActionResult DeleteShift(int id)
+    {
+        _employeeService.DeleteShift(id);
+        return RedirectToAction("Index");
+    }
 }

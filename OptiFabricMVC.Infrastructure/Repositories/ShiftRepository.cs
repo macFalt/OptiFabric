@@ -15,7 +15,6 @@ public class ShiftRepository : IShiftRepository
 
     public void StartShiftData(Shift shift)
     {
-        //musisz przypisac uzytkownika do zmiany
         var employee = _context.ApplicationUsers.FirstOrDefault(e => e.Id == shift.UserId);
         shift.ApplicationUser = employee;
         _context.Add(shift);

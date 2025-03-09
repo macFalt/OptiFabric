@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OptiFabricMVC.Application.Interfaces;
+using OptiFabricMVC.Application.Services;
 using OptiFabricMVC.Application.ViewModels.JobVM;
 using OptiFabricMVC.Domain.Model;
 
@@ -11,15 +13,18 @@ public class JobController : Controller
     private readonly IJobService _jobService;
     private readonly IProductService _productService;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IMachineService _machineService;
+    private readonly IOrderService _orderService;
 
-    public JobController(IJobService jobService, IProductService productService,
-        UserManager<ApplicationUser> userManager)
+    public JobController(IJobService jobService, IProductService productService, UserManager<ApplicationUser> userManager, IMachineService machineService, IOrderService orderService)
     {
         _jobService = jobService;
         _productService = productService;
         _userManager = userManager;
+        _machineService = machineService;
+        _orderService = orderService;
     }
-
+[Authorize]
     public IActionResult Index(int pageSize = 10, int pageNo = 1, string searchString = "")
     {
         var model = _jobService.GetAllJobs(pageSize, pageNo, searchString);
@@ -47,13 +52,56 @@ public class JobController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult StartJob(int id)
+    [HttpGet]
+    public IActionResult StartJob(int pageSize = 10, int pageNo = 1, string searchString = "")
     {
-        var data = DateTime.Now;
-        var userId = _userManager.GetUserId(User);
-        _jobService.StartJobEmployee(data, userId, id);
-        return RedirectToAction("Index");
+        var model = new MachineSelectionVM();
+        var listMachines=_machineService.GetAllMachines(pageSize, pageNo, searchString);
+        model.MachinesForListVms= listMachines.MachinesForListVms;
+        return View(model);
     }
+
+    [HttpPost]
+    public IActionResult StartJob(int id, int selectedMachineId)
+    {
+        try
+        {
+            var data = DateTime.Now;
+            var userId = _userManager.GetUserId(User);
+            _jobService.StartJobEmployee2(data, userId, id, selectedMachineId);
+
+            // TempData["SuccessMessage"] = "Zadanie rozpoczęte pomyślnie!";
+            return RedirectToAction("Index");
+        }
+        catch (InvalidOperationException ex)
+        {
+            TempData["ErrorMessage"] = ex.Message; // Przekazanie błędu do widoku
+            return RedirectToAction("StartJob");
+        }
+        // catch (Exception)
+        // {
+        //     TempData["ErrorMessage"] = "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.";
+        //     return RedirectToAction("Index");
+        // }
+    }
+
+    // [HttpPost]
+    // public IActionResult StartJob(int id,int selectedMachineId)
+    // {
+    //     var data = DateTime.Now;
+    //     var userId = _userManager.GetUserId(User);
+    //     _jobService.StartJobEmployee2(data, userId, id,selectedMachineId);
+    //     return RedirectToAction("Index");
+    // }
+
+
+    // public IActionResult StartJob(int id)
+    // {
+    //     var data = DateTime.Now;
+    //     var userId = _userManager.GetUserId(User);
+    //     _jobService.StartJobEmployee(data, userId, id);
+    //     return RedirectToAction("Index");
+    // }
 
     [HttpGet]
     public IActionResult StopJob()
@@ -107,4 +155,9 @@ public class JobController : Controller
         _jobService.EditJobEmployee(model);
         return RedirectToAction("Index");
     }
+
+    // public IActionResult ShowOperationList(int JobId)
+    // {
+    //     var model = _orderService.GetAllOrders(JobId);
+    // }
 }

@@ -76,6 +76,11 @@ public class JobRepository : IJobRepository
         // _context.SaveChanges();    
     }
 
+    public bool IsMachineBusy(int selectedMachineId)
+    {
+        return _context.Machines.Any(je => je.Id == selectedMachineId && je.Status== MachineStatus.Zajęta);
+    }
+
     public int AddJobToDB(Job job)
     {
         var productFromDb = _context.Products.FirstOrDefault(p => p.Id == job.Product.Id);
@@ -90,6 +95,8 @@ public class JobRepository : IJobRepository
     {
         jobEmployee.IsActive = true;
         var job = _context.Jobs.FirstOrDefault(j => j.Id == jobEmployee.JobId);
+        var machine = _context.Machines.FirstOrDefault(machine => machine.Id == jobEmployee.MachineId);
+        machine.Status= MachineStatus.Zajęta;
         job.IsCompleted = JobStatus.InProgress;
         job.ActivEmployeeJob = true;
         _context.JobEmployees.Add(jobEmployee);
@@ -120,6 +127,10 @@ public class JobRepository : IJobRepository
         jobEmp.EmployeeComments = jobEmployee.EmployeeComments;
         jobEmp.MissingQuantity = jobEmployee.MissingQuantity;
         jobEmp.IsActive = false;
+        
+        var machine = _context.Machines.FirstOrDefault(machine => machine.Id == jobEmp.MachineId);
+        machine.Status= MachineStatus.Wolna;
+        
         _context.SaveChanges();
     }
 
@@ -138,4 +149,6 @@ public class JobRepository : IJobRepository
         _context.SaveChanges();
         
     }
+    
+    
 }

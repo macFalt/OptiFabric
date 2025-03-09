@@ -28,7 +28,16 @@
             {
                 <tr>
                     <td>@shift.StartTime</td>
-                    <td>@shift.EndTime</td>
+                    @if (shift.EndTime == DateTime.MinValue)
+                    {
+                        <td></td>
+                    }
+                    else
+                    {
+                        <td>@shift.EndTime</td>
+
+                    }
+                    <td>@Html.ActionLink("Usuń","DeleteShift",new {id= shift.Id})</td>
                 </tr>
             }
             </tbody>

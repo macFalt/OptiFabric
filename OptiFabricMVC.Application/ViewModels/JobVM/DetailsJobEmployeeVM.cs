@@ -27,6 +27,7 @@ public class DetailsJobEmployeeVM : IMapFrom<JobEmployee>
     public string CurrentWorkerId { get; set; } // ID aktualnego pracownika
 
     public int JobId { get; set; }
+    public int MachineId { get; set; }
 
     public void ConfigureMapping(Profile profile)
     {

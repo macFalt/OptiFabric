@@ -11,4 +11,5 @@ public interface IEmployeeService
     EmployeeDetailsVM GetEmployeeDetail(string id);
     void DeleteEmployee(string id);
     void EditEmployee(EditEmployeeVM model);
+    void DeleteShift(int id);
 }

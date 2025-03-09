@@ -60,4 +60,14 @@ public class EmployeeRepository: IEmployeeRepository
         
 
     }
+
+    public void DeleteShiftFromDB(int id)
+    {
+        var shift=_context.Shifts.FirstOrDefault(sh => sh.Id == id);
+        if (shift != null)
+        {
+            _context.Shifts.Remove(shift);
+            _context.SaveChanges();
+        }
+    }
 }

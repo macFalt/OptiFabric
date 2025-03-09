@@ -1,0 +1,48 @@
+@model OptiFabricMVC.Application.ViewModels.JobVM.MachineSelectionVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Wybierz maszynę</h2>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<table class="table">
+    <thead>
+    <tr>
+        <th>Nazwa</th>
+        <th>Akcja</th>
+        <th>Status maszyny</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var machine in Model.MachinesForListVms)
+    {
+        <tr>
+            <td>@machine.Name</td>
+            <td>
+                <form asp-action="StartJob" method="post">
+                    <input type="hidden" name="selectedMachineId" value="@machine.Id" />
+                    <button type="submit" class="btn btn-primary">Wybierz</button>
+                </form>
+            </td>
+            <td>@machine.Status</td>
+        </tr>
+    }
+    </tbody>
+
+
+    
+</table>

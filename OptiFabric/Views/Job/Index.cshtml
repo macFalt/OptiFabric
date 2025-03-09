@@ -1,13 +1,10 @@
 @model OptiFabricMVC.Application.ViewModels.JobVM.ListJobsVM
-
-
-
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
-
 <h2>title</h2>
+
 @if (User.IsInRole("Manager"))
 {
     <p>
@@ -51,23 +48,24 @@
                     <td>@job.CompletedAt</td>
                     <td>@job.Product.DrawingNumber</td>
                     <td>
-                        @if (job.TotalCompletedQuantity >= job.RequiredQuantity)
-                        {
-                            <span>Wykonane</span>
-                        }
-                        else
-                        {
-                            @if (isCurrentUserAssigned)
-                            {
-                                @Html.ActionLink("Zakończ", "StopJob", new { id = job.Id })
-                            }
-                            else
-                            {
-                                @Html.ActionLink("Rozpocznij", "StartJob", new { id = job.Id })
-
-                            }
-
-                        }
+                        @Html.ActionLink("Lista operacji","ShowOperationList", new {JobId=job.Id})
+                        @* @if (job.TotalCompletedQuantity >= job.RequiredQuantity) *@
+                        @* { *@
+                        @*     <span>Wykonane</span> *@
+                        @* } *@
+                        @* else *@
+                        @* { *@
+                        @*     @if (isCurrentUserAssigned) *@
+                        @*     { *@
+                        @*         @Html.ActionLink("Zakończ", "StopJob", new { id = job.Id }) *@
+                        @*     } *@
+                        @*     else *@
+                        @*     { *@
+                        @*         @Html.ActionLink("Rozpocznij", "StartJob", new { id = job.Id }) *@
+                        @* *@
+                        @*     } *@
+                        @* *@
+                        @* } *@
                         @if (User.IsInRole("Manager"))
                         {
                             <td>

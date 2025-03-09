@@ -119,4 +119,26 @@ public class JobService : IJobService
         var jobEmployee = _mapper.Map<JobEmployee>(model);
         _jobRepository.EditJobEmployee(jobEmployee);
     }
+
+    public void StartJobEmployee2(DateTime data, string? userId, int id,int selectedMachineId)
+    {
+        if (_jobRepository.IsMachineBusy(selectedMachineId))
+        {
+            throw new InvalidOperationException("Maszyna jest już zajęta");
+        }
+        
+        var job = new JobEmployee()
+        {
+            CompletedQuantity = 0,
+            EmployeeComments = "",
+            MissingQuantity = 0,
+            StartTime = data,
+            CurrentWorkerId = userId,
+            JobId = id,
+            MachineId = selectedMachineId
+        };
+        
+
+        _jobRepository.StartJobEmployee(job);
+    }
 }

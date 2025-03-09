@@ -22,21 +22,25 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Machines" asp-action="Index">Maszyny</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Produkty</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Job" asp-action="Index">Zamówienia</a>
-                    </li>
-                    @if (User.IsInRole("Manager"))
+                    @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="EmployeeControler" asp-action="Index">Pracownicy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Machines" asp-action="Index">Maszyny</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Produkty</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Job" asp-action="Index">Zamówienia</a>
+                        </li>
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="EmployeeControler" asp-action="Index">Pracownicy</a>
+                            </li>
+                        }
                     }
+
                 </ul>
                 <partial name="_LoginPartial"/>
             </div>

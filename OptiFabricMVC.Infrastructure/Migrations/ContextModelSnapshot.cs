@@ -318,6 +318,9 @@ namespace OptiFabricMVC.Infrastructure.Migrations
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
+                    b.Property<int>("MachineId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MissingQuantity")
                         .HasColumnType("int");
 
@@ -329,6 +332,8 @@ namespace OptiFabricMVC.Infrastructure.Migrations
                     b.HasIndex("CurrentWorkerId");
 
                     b.HasIndex("JobId");
+
+                    b.HasIndex("MachineId");
 
                     b.ToTable("JobEmployees");
                 });
@@ -448,7 +453,7 @@ namespace OptiFabricMVC.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartTime")
@@ -559,9 +564,17 @@ namespace OptiFabricMVC.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OptiFabricMVC.Domain.Model.Machine", "Machine")
+                        .WithMany("JobEmployees")
+                        .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("CurrentWorker");
 
                     b.Navigation("Job");
+
+                    b.Navigation("Machine");
                 });
 
             modelBuilder.Entity("OptiFabricMVC.Domain.Model.Product", b =>
@@ -583,6 +596,11 @@ namespace OptiFabricMVC.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("OptiFabricMVC.Domain.Model.Job", b =>
+                {
+                    b.Navigation("JobEmployees");
+                });
+
+            modelBuilder.Entity("OptiFabricMVC.Domain.Model.Machine", b =>
                 {
                     b.Navigation("JobEmployees");
                 });

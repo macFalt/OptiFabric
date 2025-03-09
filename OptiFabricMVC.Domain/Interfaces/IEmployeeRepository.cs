@@ -10,4 +10,5 @@ public interface IEmployeeRepository
     ApplicationUser GetEmployee(string id);
     void DeleteEmployee(string id);
     void UpdateEmployee(ApplicationUser employee);
+    void DeleteShiftFromDB(int id);
 }

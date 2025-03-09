@@ -6,6 +6,8 @@ namespace OptiFabricMVC.Application.ViewModels.EmployeeVM;
 
 public class WorkingHoursVM: IMapFrom<Shift>
 {
+    public int  Id { get; set; }
+    
     public string UserId { get; set; }
     
     public DateTime StartTime { get; set; } 

@@ -64,4 +64,9 @@ public class EmployeeService: IEmployeeService
         var employee = _mapper.Map<ApplicationUser>(model);
         _EmployeeRepository.UpdateEmployee(employee);
     }
+
+    public void DeleteShift(int id)
+    {
+        _EmployeeRepository.DeleteShiftFromDB(id);
+    }
 }

@@ -15,4 +15,5 @@ public interface IJobService
     List<DetailsJobEmployeeVM> GetAllJobsEmployeeDetails(int id);
     DetailsJobEmployeeVM GetJobEmployeeDetailById(int id);
     void EditJobEmployee(DetailsJobEmployeeVM model);
+    void StartJobEmployee2(DateTime data, string? userId, int id, int selectedMachineId);
 }

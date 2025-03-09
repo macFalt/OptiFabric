@@ -23,4 +23,9 @@ public class OrderService: IOrderService
         return id;
 
     }
+
+    // public object GetAllOrders(int jobId)
+    // {
+    //     throw new NotImplementedException();
+    // }
 }

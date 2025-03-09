@@ -15,4 +15,5 @@ public interface IJobRepository
     IQueryable<JobEmployee> GetAllJobsEmployeeByIdFromDB(int id);
     JobEmployee GetJobEmployeeFromDB(int id);
     void EditJobEmployee(JobEmployee jobEmployee);
+    bool IsMachineBusy(int selectedMachineId);
 }
