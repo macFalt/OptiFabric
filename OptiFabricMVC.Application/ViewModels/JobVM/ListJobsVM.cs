@@ -6,7 +6,7 @@ public class ListJobsVM
 {
     public List<JobsForListVM> JobsForList { get; set; }
     
-    public List<JobEmployee> JobEmployees { get; set; }
+    public List<Operation> Operations { get; set; }
     
 
     public int CurrentPage { get; set; }

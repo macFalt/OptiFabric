@@ -1,6 +1,8 @@
+using OptiFabricMVC.Domain.Interfaces;
+
 namespace OptiFabricMVC.Domain.Model;
 
-public class JobEmployee
+public class JobEmployee : IEntity<int>
 {
     public int Id { get; set; }
     
@@ -16,16 +18,18 @@ public class JobEmployee
     
     public DateTime EndTime { get; set; }
 
-    public double WorkTime => (EndTime - StartTime).TotalMinutes;
+    public double? WorkTime => (EndTime - StartTime).TotalMinutes;
+
+    public int JobId { get; set; }
 
     public int MachineId { get; set; }
     public Machine Machine { get; set; }
     
     public string CurrentWorkerId { get; set; } 
     public ApplicationUser CurrentWorker { get; set; } 
-
-    public int JobId { get; set; }
-    public Job Job { get; set; }
+    
+    public int OperationId { get; set; }
+    public Operation Operation { get; set; }
     
 
 }

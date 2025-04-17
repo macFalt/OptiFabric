@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using OptiFabricMVC.Application.Mapping;
 using OptiFabricMVC.Application.ViewModels.ProductsVM;
@@ -7,30 +8,26 @@ namespace OptiFabricMVC.Application.ViewModels.JobVM;
 
 public class AddNewJobVM: IMapFrom<Job>
 {
-    public int Id { get; set; } // Unikalny identyfikator zadania
+    public int Id { get; set; } 
         
-    public string Description { get; set; } // Opis zadania
+    public string Description { get; set; } 
+    public JobStatus JobStatus { get; set; } 
     
-    public JobStatus IsCompleted { get; set; } // Status wykonania zadania
-        
-    public int RequiredQuantity { get; set; } // Ilość sztuk potrzebnych
-
-    public int TotalCompletedQuantity { get; set; } // Ilość wykonanych sztuk
-
-    public int TotalMissingQuantity { get; set; } // Ilość braków
     
-    public DateTime CreatedAt { get; set; } = DateTime.Now; // Data utworzenia zadania
-    public DateTime? CompletedAt { get; set; } // Data ukończenia zadania (opcjonalna)
+    public int RequiredQuantity { get; set; } 
+
+    public int TotalCompletedQuantity { get; set; } 
+
+    public int TotalMissingQuantity { get; set; } 
+    
+    public DateTime CreatedAt { get; set; } = DateTime.Now; 
+    public DateTime? CompletedAt { get; set; } 
 
     public List<ProductForListVM> Products { get; set; }
     
-    public ProductDetailsVM Product { get; set; } // Produkt, do którego przypisane jest zadanie
+    public ProductDetailsVM Product { get; set; }
 
-    public int ProductId { get; set; }    //SelectedProductId
-    
-    
-    
-    
+    public int ProductId { get; set; }    
     
     
     public void ConfigureMapping(Profile profile)

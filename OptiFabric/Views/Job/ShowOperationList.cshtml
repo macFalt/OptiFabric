@@ -1,0 +1,105 @@
+@model OptiFabricMVC.Application.ViewModels.OperationVM.ListOperationVM
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+
+@* @if (User.IsInRole("Manager")) *@
+@* { *@
+@*     <p> *@
+@*         <a asp-action="AddOperation" asp-route-jobId="@Model.JobId">Dodaj nową operację</a> *@
+@*     </p> *@
+@* } *@
+
+<form asp-action="ShowOperationList" asp-controller="Job" method="get">
+    <div class="row">
+        <input type="text" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
+        <input type="submit" value="Wyszukaj"/>
+    </div>
+    <input type="hidden" asp-for="JobId" />
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nazwa operacji</th>
+                <th>Opis</th>
+                <th>Komentarz</th>
+                <th>Ilość sztuk potrzebnych</th>
+                <th>Ilość wykonanych sztuk</th>
+                <th>Ilość braków</th>
+                <th>Przewidziany czas na 1 sztukę</th>
+                <th>Status wykonania</th>
+
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            @foreach (var operation in Model.OperationForListVms)
+            {
+                var isCurrentUserAssigned = Model.JobEmployees.JobEmployeeForListVms.Any(je => je.CurrentWorkerId == ViewBag.CurrentUserId && je.IsActive && je.OperationId==operation.Id ); //&& je.IsActive
+
+                <tr>
+                    <td>@operation.Name</td>
+                    <td>@operation.Description</td>
+                    <td>@operation.Comments</td>
+                    <td>@operation.RequiredQuantity</td>
+                    <td>@operation.CompletedQuantity</td>
+                    <td>@operation.MissingQuantity</td>
+                    <td>@operation.EstimatedTimePerUnit</td>
+                    <td>@operation.OperationStatus</td>
+
+                    <td>
+                        @if ((operation.CompletedQuantity+operation.MissingQuantity) >= operation.RequiredQuantity)
+                        {
+                            <span>Wykonane</span>
+                        }
+                        else
+                        {
+                            @if (isCurrentUserAssigned)
+                            {
+                                @Html.ActionLink("Zakończ", "StopJob", new { id = operation.Id, JobId=operation.JobId })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Rozpocznij", "StartJob", new { id = operation.Id, JobId=operation.JobId })
+
+                            }
+
+                        }
+                        @if (User.IsInRole("Manager"))
+                        {
+                        <td>
+                            @Html.ActionLink("Edytuj", "EditOperation", new { id = operation.Id, opid=operation.OperationPatternId })
+                            @Html.ActionLink("Szczegóły", "ListJobEmployee", new { id = operation.Id })
+
+                        </td>
+                    }
+                    </td>
+                </tr>
+            }
+            </tbody>
+
+        </table>
+    </div>
+    <div class="row">
+        <ul class="pagination">
+            @for (int i = 1; i <= Math.Ceiling(Model.Count / (double)Model.PageSize); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNo="@i"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-searchString="@Model.SearchString">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</form>

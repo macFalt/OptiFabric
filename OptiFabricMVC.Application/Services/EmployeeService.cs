@@ -27,6 +27,10 @@ public class EmployeeService: IEmployeeService
     { 
         var employee = _mapper.Map<ApplicationUser>(model);
         var result = await _UserManager.CreateAsync(employee, model.Password);
+        if (result.Succeeded)
+        {
+            await _UserManager.AddToRoleAsync(employee, model.SelectedRole);
+        }
         return result;
     }
 
@@ -47,10 +51,11 @@ public class EmployeeService: IEmployeeService
 
     }
 
-    public EmployeeDetailsVM GetEmployeeDetail(string id)
+    public EmployeeForListVM GetEmployeeDetail(string id)
     {
         var employee = _EmployeeRepository.GetEmployee(id);
-        var emp = _mapper.Map<EmployeeDetailsVM>(employee);
+        //var emp = _mapper.Map<EmployeeDetailsVM>(employee);
+        var emp = _mapper.Map<EmployeeForListVM>(employee);
         return emp;
     }
 
@@ -59,11 +64,36 @@ public class EmployeeService: IEmployeeService
         _EmployeeRepository.DeleteEmployee(id);
     }
 
-    public void EditEmployee(EditEmployeeVM model)
+    public async Task EditEmployee(EditEmployeeVM model)
     {
-        var employee = _mapper.Map<ApplicationUser>(model);
-        _EmployeeRepository.UpdateEmployee(employee);
+        // Pobierz użytkownika po ID
+        var employee = await _UserManager.FindByIdAsync(model.Id);
+        
+        if (employee == null)
+            throw new Exception("Użytkownik nie istnieje");
+        
+        employee.Name = model.Name;
+        employee.Surname = model.Surname;
+        
+        // Pobranie ról użytkownika
+        var currentRoles = await _UserManager.GetRolesAsync(employee);
+
+        // Usunięcie starej roli
+        if (currentRoles.Any())
+        {
+            await _UserManager.RemoveFromRoleAsync(employee, currentRoles.First());
+        }
+
+        // Dodanie nowej roli
+        if (!string.IsNullOrEmpty(model.Role))
+        {
+            await _UserManager.AddToRoleAsync(employee, model.Role);
+        }
+
+        // Aktualizacja użytkownika w bazie
+        await _UserManager.UpdateAsync(employee);
     }
+
 
     public void DeleteShift(int id)
     {

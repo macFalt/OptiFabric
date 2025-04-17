@@ -1,31 +1,26 @@
+using OptiFabricMVC.Domain.Interfaces;
+
 namespace OptiFabricMVC.Domain.Model;
 
-public class Job
+public class Job : IEntity<int>
 {
-    public int Id { get; set; } // Unikalny identyfikator zadania
-        
-    public string Description { get; set; } // Opis zadania
+    public int Id { get; set; } 
     
-    public JobStatus IsCompleted { get; set; } // Status wykonania zadania
-
+    public string Description { get; set; } 
+    public JobStatus JobStatus { get; set; } 
     public bool ActivEmployeeJob { get; set; }
+    public int RequiredQuantity { get; set; } 
+    public int? TotalCompletedQuantity { get; set; } 
         
-    public int RequiredQuantity { get; set; } // Ilość sztuk potrzebnych
+    public int? TotalMissingQuantity { get; set; } 
     
-    public int? TotalCompletedQuantity { get; set; } // Ilość wykonanych sztuk
-        
-    public int? TotalMissingQuantity { get; set; } // Ilość braków
+    public DateTime CreatedAt { get; set; } = DateTime.Now; 
+    public DateTime? CompletedAt { get; set; } 
     
-    public DateTime CreatedAt { get; set; } = DateTime.Now; // Data utworzenia zadania
-    public DateTime? CompletedAt { get; set; } // Data ukończenia zadania (opcjonalna)
-    
-    public int ProductId { get; set; } // Klucz obcy do produktu
-    public Product Product { get; set; } // Produkt, do którego przypisane jest zadanie
-    
-    
+    public int ProductId { get; set; } 
+    public Product Product { get; set; }
 
     public ICollection<Operation> Operations { get; set; }
-    public ICollection<JobEmployee> JobEmployees { get; set; }
     
 }
 
@@ -33,5 +28,6 @@ public enum JobStatus
 {
 InProgress,
 Completed,
-NotStarted
+NotStarted,
+Cancelled
 }

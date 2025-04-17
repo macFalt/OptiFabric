@@ -16,6 +16,10 @@ public class NewEmployeeVM: IMapFrom<ApplicationUser>
     public string? Password { get; set; }
 
     public string? NrLogin { get; set; }
+
+    public string SelectedRole { get; set; } 
+    public List<string> AvailableRoles { get; set; } 
+
     
     public void ConfigureMapping(Profile profile)
     {

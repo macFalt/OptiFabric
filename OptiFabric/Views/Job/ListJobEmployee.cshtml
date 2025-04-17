@@ -1,4 +1,4 @@
-@model List<OptiFabricMVC.Application.ViewModels.JobVM.DetailsJobEmployeeVM>
+@model List<OptiFabricMVC.Application.ViewModels.JobEmployeeVM.DetailsJobEmployeeVM>
 
 @{
     ViewBag.Title = "title";
@@ -17,6 +17,7 @@
             <th>Komentarz </th>
             <th>Ilość sztuk dobrych </th>
             <th>Ilość braków </th>
+            <th>Wyrobienie </th>
             
             <th></th>
         </tr>
@@ -34,7 +35,10 @@
                 <td>@job.EmployeeComments</td>
                 <td>@job.CompletedQuantity</td>
                 <td>@job.MissingQuantity</td>
+                <td>@job.Efficiency%</td>
                 <td>@Html.ActionLink("Edytuj","EditJobEmployee",new {id=job.Id,jobId=job.JobId})</td>
+
+
             </tr>
         }
         </tbody>

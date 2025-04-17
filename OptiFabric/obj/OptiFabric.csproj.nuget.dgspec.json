@@ -121,6 +121,9 @@
             "projectReferences": {
               "/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Domain/OptiFabricMVC.Domain.csproj": {
                 "projectPath": "/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Domain/OptiFabricMVC.Domain.csproj"
+              },
+              "/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/OptiFabricMVC.Infrastructure.csproj": {
+                "projectPath": "/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Infrastructure/OptiFabricMVC.Infrastructure.csproj"
               }
             }
           }

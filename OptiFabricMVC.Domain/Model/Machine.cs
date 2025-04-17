@@ -1,6 +1,8 @@
+using OptiFabricMVC.Domain.Interfaces;
+
 namespace OptiFabricMVC.Domain.Model;
 
-public class Machine
+public class Machine : IEntity<int>
 {
     public int Id { get; set; }
 
@@ -16,5 +18,6 @@ public class Machine
 public enum MachineStatus
 {
     Wolna,
-    Zajęta
+    Zajęta,
+    Uszkodzona
 }

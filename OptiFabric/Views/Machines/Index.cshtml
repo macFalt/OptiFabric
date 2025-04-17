@@ -39,6 +39,7 @@
                     @if (User.IsInRole("Manager"))
                     {
                         @Html.ActionLink("Edytuj", "EditMachine", new { id = machines.Id })
+                        @:
                         @Html.ActionLink("Usuń", "Delete", new { id = machines.Id })
                     }
                     </td>

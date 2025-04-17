@@ -2828,7 +2828,8 @@
       "OptiFabricMVC.Application/1.0.0": {
         "dependencies": {
           "AutoMapper": "13.0.1",
-          "OptiFabricMVC.Domain": "1.0.0"
+          "OptiFabricMVC.Domain": "1.0.0",
+          "OptiFabricMVC.Infrastructure": "1.0.0"
         },
         "runtime": {
           "OptiFabricMVC.Application.dll": {}

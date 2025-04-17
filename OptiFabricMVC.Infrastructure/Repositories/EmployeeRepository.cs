@@ -30,7 +30,10 @@ public class EmployeeRepository: IEmployeeRepository
             .Where(user=>!manager.Contains(user.Id))
             .AsQueryable();
 
-        return employees;
+        var employeesList = _context.ApplicationUsers.AsQueryable();
+
+        //return employees;
+        return employeesList;
     }
 
     public ApplicationUser GetEmployee(string id)
@@ -52,6 +55,7 @@ public class EmployeeRepository: IEmployeeRepository
     public void UpdateEmployee(ApplicationUser employee)
     {
         var existingEmployee = _context.ApplicationUsers.FirstOrDefault(e => e.Id == employee.Id);
+        
         existingEmployee.Name = employee.Name;
         existingEmployee.Surname = employee.Surname;
         existingEmployee.Position = employee.Position;

@@ -8,8 +8,8 @@ public interface IEmployeeService
 {
     Task<IdentityResult> AddEmployeeAsync(NewEmployeeVM model);
     ListEmployeeVM GetAllEmployee(int pageSize, int pageNo, string searchString);
-    EmployeeDetailsVM GetEmployeeDetail(string id);
+    EmployeeForListVM GetEmployeeDetail(string id);
     void DeleteEmployee(string id);
-    void EditEmployee(EditEmployeeVM model);
+    Task EditEmployee(EditEmployeeVM model);
     void DeleteShift(int id);
 }

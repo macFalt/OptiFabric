@@ -10,6 +10,9 @@ public class EmployeeForListVM: IMapFrom<ApplicationUser>
   public string Name { get; set; }
   public string Surname { get; set; }
   public string Position { get; set; }
+  public string Role { get; set; }
+  
+  public List<string> AvailabeRoles { get; set; }
   
   public void ConfigureMapping(Profile profile)
   {

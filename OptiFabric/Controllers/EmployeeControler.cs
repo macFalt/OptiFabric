@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OptiFabricMVC.Application.Interfaces;
 using OptiFabricMVC.Application.Services;
 using OptiFabricMVC.Application.ViewModels.EmployeeVM;
@@ -14,26 +15,42 @@ public class EmployeeControler : Controller
     private readonly IEmployeeService _employeeService;
     private readonly IShiftService _shiftService;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
     
 
-    public EmployeeControler(IEmployeeService employeeService, UserManager<ApplicationUser> userManager, IShiftService shiftService)
+    public EmployeeControler(IEmployeeService employeeService, UserManager<ApplicationUser> userManager, IShiftService shiftService, RoleManager<IdentityRole> roleManager)
     {
         _employeeService = employeeService;
         _userManager = userManager;
         _shiftService = shiftService;
+        _roleManager = roleManager;
     }
     
     // GET
-    public IActionResult Index(int pageSize = 10, int pageNo = 1, string searchString = "")
+    public async Task<IActionResult> Index(int pageSize = 10, int pageNo = 1, string searchString = "")
     {
         var model = _employeeService.GetAllEmployee(pageSize, pageNo,searchString);
+        foreach (var employee in model.EmployeeForListVms)
+        {
+            var user = await _userManager.FindByIdAsync(employee.Id);
+            if (user != null)
+            {
+                employee.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            }
+        }
         return View(model);
     }
 
     [HttpGet]
-    public IActionResult AddEmployee()
+    public async Task<IActionResult> AddEmployee()
     {
-        var model = new NewEmployeeVM();
+        var roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+        var model = new NewEmployeeVM
+        {
+            AvailableRoles = roles
+        };
+
         return View(model);
     }
 
@@ -71,16 +88,23 @@ public class EmployeeControler : Controller
     }
 
     [HttpGet]
-    public IActionResult EditEmployee(string id)
+    public async Task<IActionResult> EditEmployee(string id)
     {
+        var roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
         var employee = _employeeService.GetEmployeeDetail(id);
+            var user = await _userManager.FindByIdAsync(employee.Id);
+            if (user != null)
+            {
+                employee.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            }
+        employee.AvailabeRoles = roles;
         return View(employee);
     }
 
     [HttpPost]
-    public IActionResult EditEmployee(EditEmployeeVM model)
+    public async Task<IActionResult> EditEmployee(EditEmployeeVM model)
     {
-        _employeeService.EditEmployee(model);
+        await _employeeService.EditEmployee(model);
         return RedirectToAction("Index");
     }
 
@@ -94,5 +118,37 @@ public class EmployeeControler : Controller
     {
         _employeeService.DeleteShift(id);
         return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> AddRole()
+    {
+        var model=new AddNewRolesVM();
+        return View(model);
+    }
+
+    
+    [HttpPost]
+    public async Task<IActionResult> AddRole(AddNewRolesVM model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var newRole = new IdentityRole(model.Name); // Tworzenie nowej roli
+        var result = await _roleManager.CreateAsync(newRole); // Dodanie roli do bazy
+
+        if (result.Succeeded)
+        {
+            return RedirectToAction("Index"); // Powrót do listy ról
+        }
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError("", error.Description);
+        }
+
+        return View(model);
     }
 }

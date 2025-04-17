@@ -18,26 +18,26 @@ public class ShiftController : Controller
     // GET
     public IActionResult Index()
     {
-        //ViewBag.CurrentDateTime = DateTime.UtcNow.ToString("o"); // ISO 8601 format: "YYYY-MM-DDTHH:mm:ss.fffZ"
-        ViewBag.CurrentDateTime = DateTime.Now; // ISO 8601 format: "YYYY-MM-DDTHH:mm:ss.fffZ"
+
+        ViewBag.CurrentDateTime = DateTime.Now; 
         return View();
     }
 
-    public IActionResult StartShift()
+    public async Task<IActionResult> StartShift()
     {
         var data = DateTime.Now;
         var userId = _userManager.GetUserId(User);
         
-        _shiftService.StartShift(data,userId);
+        await _shiftService.StartShift(data,userId);
         return View("Index");
     }
 
-    public IActionResult EndShift()
+    public async Task<IActionResult> EndShift()
     {
         var data = DateTime.Now;
         var userId = _userManager.GetUserId(User);
         
-        _shiftService.EndShift(data,userId);
+        await _shiftService.EndShift(data,userId);
         return View("Index");
     }
 }

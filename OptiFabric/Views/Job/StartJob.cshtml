@@ -35,6 +35,7 @@
             <td>
                 <form asp-action="StartJob" method="post">
                     <input type="hidden" name="selectedMachineId" value="@machine.Id" />
+                    <input type="hidden" name="JobId" value="@Model.JobId" />
                     <button type="submit" class="btn btn-primary">Wybierz</button>
                 </form>
             </td>

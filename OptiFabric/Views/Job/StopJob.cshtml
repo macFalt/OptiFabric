@@ -1,4 +1,4 @@
-@model OptiFabricMVC.Application.ViewModels.JobVM.EndJobEmployeeVM
+@model OptiFabricMVC.Application.ViewModels.JobEmployeeVM.EndJobEmployeeVM
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
@@ -10,6 +10,8 @@
     <div class="col-md-4">
         <form asp-action="StopJob">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="JobId" />
+
             <div class="form-group">
                 <label asp-for="EmployeeComments" class="control-label">Komentarz</label>
                 <input asp-for="EmployeeComments" class="form-control"/>

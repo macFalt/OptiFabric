@@ -11,6 +11,8 @@
     <div class="col-md-4">
         <form asp-action="AddEmployee">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AvailableRoles" />
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label">Imie</label>
                 <input asp-for="Name" class="form-control"/>
@@ -21,11 +23,11 @@
                 <input asp-for="Surname" class="form-control"/>
                 <span asp-validation-for="Surname" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Position" class="control-label">Stanowisko</label>
-                <input asp-for="Position" class="form-control"/>
-                <span asp-validation-for="Position" class="text-danger"></span>
-            </div>
+            @* <div class="form-group"> *@
+            @*     <label asp-for="Position" class="control-label">Stanowisko</label> *@
+            @*     <input asp-for="Position" class="form-control"/> *@
+            @*     <span asp-validation-for="Position" class="text-danger"></span> *@
+            @* </div> *@
             <div class="form-group">
                 <label asp-for="Password" class="control-label">Hasło</label>
                 <input asp-for="Password" class="form-control"/>
@@ -36,6 +38,13 @@
                 <input asp-for="NrLogin" class="form-control"/>
                 <span asp-validation-for="NrLogin" class="text-danger"></span>
             </div>
+
+            <label for="SelectedRole">Wybierz rolę</label>
+            <select asp-for="SelectedRole" asp-items="@(new SelectList(Model.AvailableRoles))" class="form-control">
+                <option value="">-- Wybierz rolę --</option>
+            </select>
+
+            
             <div class="form-group">
                 <input type="submit" value="Dodaj" class="btn btn-primary"/>
             </div>

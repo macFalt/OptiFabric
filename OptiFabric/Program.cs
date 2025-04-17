@@ -33,10 +33,13 @@ builder.Services.AddTransient<IMachinesRepository, MachineRepository>();
 builder.Services.AddTransient<IMachineService, MachineService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IProductService, ProductService>();
-builder.Services.AddTransient<IOrderRepository, OrderRepository>();
-builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IJobRepository, JobRepository>();
 builder.Services.AddTransient<IJobService, JobService>();
+builder.Services.AddTransient<IOperationService, OperationService>();
+builder.Services.AddTransient<IOperationRepository, OperationRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
+builder.Services.AddTransient<IJobEmployeeRepository, JobEmployeeRepository>();
+builder.Services.AddTransient<IJobEmployeeService, JobEmployeeService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

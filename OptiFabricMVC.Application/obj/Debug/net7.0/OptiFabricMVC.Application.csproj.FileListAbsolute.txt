@@ -13,3 +13,5 @@
 /Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/refint/OptiFabricMVC.Application.dll
 /Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/OptiFabricMVC.Application.pdb
 /Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/obj/Debug/net7.0/ref/OptiFabricMVC.Application.dll
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/bin/Debug/net7.0/OptiFabricMVC.Infrastructure.dll
+/Users/macbook/RiderProjects/OptiFabric/OptiFabricMVC.Application/bin/Debug/net7.0/OptiFabricMVC.Infrastructure.pdb

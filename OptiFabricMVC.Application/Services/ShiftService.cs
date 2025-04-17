@@ -18,7 +18,7 @@ public class ShiftService: IShiftService
         _mapper = mapper;
     }
 
-    public void StartShift(DateTime startShiftData,string UserId)
+    public async Task StartShift(DateTime startShiftData,string UserId)
     {
         var shift = new Shift
         {
@@ -26,13 +26,12 @@ public class ShiftService: IShiftService
             StartTime = startShiftData,
             isActive = true,
             EndTime = null
-
         };
         
-        _ShiftRepository.StartShiftData(shift);
+        await _ShiftRepository.StartShiftData(shift);
     }
     
-    public void EndShift(DateTime endShiftData,string UserId)
+    public async Task EndShift(DateTime endShiftData,string UserId)
     {
         var shift = new Shift
         {
@@ -40,7 +39,7 @@ public class ShiftService: IShiftService
             EndTime = endShiftData,
         };
         
-        _ShiftRepository.EndShiftData(shift);
+        await _ShiftRepository.EndShiftData(shift);
     }
     
 

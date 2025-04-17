@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OptiFabricMVC.Application.Interfaces;
 using OptiFabricMVC.Application.Services;
+using OptiFabricMVC.Application.ViewModels.JobEmployeeVM;
 using OptiFabricMVC.Application.ViewModels.JobVM;
+using OptiFabricMVC.Application.ViewModels.OperationVM;
+using OptiFabricMVC.Domain.Interfaces;
 using OptiFabricMVC.Domain.Model;
 
 namespace OptiFabric.Controllers;
@@ -14,150 +17,206 @@ public class JobController : Controller
     private readonly IProductService _productService;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMachineService _machineService;
-    private readonly IOrderService _orderService;
+    private readonly IOperationService _operationService;
+    private readonly IJobEmployeeService _jobEmployeeService;
 
-    public JobController(IJobService jobService, IProductService productService, UserManager<ApplicationUser> userManager, IMachineService machineService, IOrderService orderService)
+    public JobController(IJobService jobService, IProductService productService,
+        UserManager<ApplicationUser> userManager, IMachineService machineService, IOperationService operationService, IJobEmployeeService jobEmployeeService)
     {
         _jobService = jobService;
         _productService = productService;
         _userManager = userManager;
         _machineService = machineService;
-        _orderService = orderService;
+        _operationService = operationService;
+        _jobEmployeeService = jobEmployeeService;
     }
-[Authorize]
-    public IActionResult Index(int pageSize = 10, int pageNo = 1, string searchString = "")
+
+    //*************************************************
+    //****************JobController********************
+    //*************************************************
+    
+    [Authorize]
+    public async Task<IActionResult> Index(int pageSize = 10, int pageNo = 1, string searchString = "")
     {
-        var model = _jobService.GetAllJobs(pageSize, pageNo, searchString);
-        var emploList = _jobService.GetAllJobsEmployee();
-        model.JobEmployees = emploList;
+        var model = await _jobService.GetAllJobsAsync(pageSize, pageNo, searchString);
         var userId = _userManager.GetUserId(User);
         ViewBag.CurrentUserId = userId;
         return View(model);
     }
 
     [HttpGet]
-    public IActionResult AddJob(int pageSize = 10, int pageNo = 1, string searchString = "")
+    public async Task<IActionResult> AddJob(int pageSize = 10, int pageNo = 1, string searchString = "")
     {
         var model = new AddNewJobVM();
-        var listProduct = _productService.GetAllProducts(pageSize, pageNo, searchString);
+        var listProduct = await _productService.GetAllProductsAsync(pageSize, pageNo, searchString);
         model.Products = listProduct.ProductsListVM;
         return View(model);
     }
 
     [HttpPost]
-    public IActionResult AddJob(AddNewJobVM model)
+    public async Task<IActionResult> AddJob(AddNewJobVM model)
     {
-        model.Product = _productService.GetDetail(model.ProductId);
-        var job = _jobService.AddJob(model);
+        var job = await _jobService.AddJob(model);
         return RedirectToAction("Index");
     }
 
     [HttpGet]
-    public IActionResult StartJob(int pageSize = 10, int pageNo = 1, string searchString = "")
+    public async Task<IActionResult> EditJob(int id, int pageSize = 10, int pageNo = 1, string searchString = "")
     {
-        var model = new MachineSelectionVM();
-        var listMachines=_machineService.GetAllMachines(pageSize, pageNo, searchString);
-        model.MachinesForListVms= listMachines.MachinesForListVms;
-        return View(model);
-    }
-
-    [HttpPost]
-    public IActionResult StartJob(int id, int selectedMachineId)
-    {
-        try
-        {
-            var data = DateTime.Now;
-            var userId = _userManager.GetUserId(User);
-            _jobService.StartJobEmployee2(data, userId, id, selectedMachineId);
-
-            // TempData["SuccessMessage"] = "Zadanie rozpoczęte pomyślnie!";
-            return RedirectToAction("Index");
-        }
-        catch (InvalidOperationException ex)
-        {
-            TempData["ErrorMessage"] = ex.Message; // Przekazanie błędu do widoku
-            return RedirectToAction("StartJob");
-        }
-        // catch (Exception)
-        // {
-        //     TempData["ErrorMessage"] = "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.";
-        //     return RedirectToAction("Index");
-        // }
-    }
-
-    // [HttpPost]
-    // public IActionResult StartJob(int id,int selectedMachineId)
-    // {
-    //     var data = DateTime.Now;
-    //     var userId = _userManager.GetUserId(User);
-    //     _jobService.StartJobEmployee2(data, userId, id,selectedMachineId);
-    //     return RedirectToAction("Index");
-    // }
-
-
-    // public IActionResult StartJob(int id)
-    // {
-    //     var data = DateTime.Now;
-    //     var userId = _userManager.GetUserId(User);
-    //     _jobService.StartJobEmployee(data, userId, id);
-    //     return RedirectToAction("Index");
-    // }
-
-    [HttpGet]
-    public IActionResult StopJob()
-    {
-        var model = new EndJobEmployeeVM();
-        return View(model);
-    }
-
-    [HttpPost]
-    public IActionResult StopJob(EndJobEmployeeVM model, int id)
-    {
-        var data = DateTime.Now;
-        var userId = _userManager.GetUserId(User);
-        model.EndTime = data;
-        _jobService.StopJobEmployee(model, data, userId, id);
-        return RedirectToAction("Index");
-    }
-
-    [HttpGet]
-    public IActionResult EditJob(int id, int pageSize = 10, int pageNo = 1, string searchString = "")
-    {
-        var job = _jobService.GetSelectedJob(id);
-        var listProduct = _productService.GetAllProducts(pageSize, pageNo, searchString);
+        var job = await _jobService.GetSelectedJobAsync(id);
+        var listProduct = await _productService.GetAllProductsAsync(pageSize, pageNo, searchString);
         job.Products = listProduct.ProductsListVM;
         return View(job);
     }
 
     [HttpPost]
-    public IActionResult EditJob(AddNewJobVM model)
+    public async Task<IActionResult> EditJob(EditJobVM model)
     {
-        _jobService.EditJob(model);
+        await _jobService.EditJobAsync(model);
         return RedirectToAction("Index");
     }
-
-    public IActionResult ListJobEmployee(int id)
+    
+    
+    public async Task<IActionResult> ShowOperationList(int JobId,int ProductId  ,int pageSize = 10, int pageNo = 1, string searchString = "")
     {
-        var emploList = _jobService.GetAllJobsEmployeeDetails(id);
-        return View(emploList);
+        var model = _operationService.GetAllOperations(JobId,ProductId, pageSize, pageNo, searchString);
+        model.JobId = JobId;
+        var emploList = await _jobEmployeeService.GetAllJobEmployeesAsync();
+        model.JobEmployees = emploList;
+        var userId = _userManager.GetUserId(User);
+        ViewBag.CurrentUserId = userId;
+        return View(model);
+    }
+    
+    //*********************************************************
+    //****************JobEmployeeController********************
+    //*********************************************************
+
+    
+    [HttpGet]
+    public async Task<IActionResult> StartJob(int JobId, int pageSize = 10, int pageNo = 1, string searchString = "")
+    {
+        var model = new MachineSelectionVM();
+        var listMachines = await _machineService.GetAllMachines(pageSize, pageNo, searchString);
+        model.MachinesForListVms = listMachines.MachinesForListVms;
+        model.JobId = JobId;
+        return View(model);
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> StartJob(int id, int selectedMachineId, int JobId)
+    {
+        try
+        {
+            var data = DateTime.Now;
+            var userId = _userManager.GetUserId(User);
+            await _jobEmployeeService.StartJobEmployee2(data, userId, id, selectedMachineId, JobId);
+            return RedirectToAction("ShowOperationList", new { JobId = JobId });
+        }
+        catch (InvalidOperationException ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+            return RedirectToAction("StartJob");
+        }
     }
 
     [HttpGet]
-    public IActionResult EditJobEmployee(int id)
+    public IActionResult StopJob(int JobId)
     {
-        var model = _jobService.GetJobEmployeeDetailById(id);
+        var model = new EndJobEmployeeVM();
+        model.JobId = JobId;
         return View(model);
     }
 
     [HttpPost]
-    public IActionResult EditJobEmployee(DetailsJobEmployeeVM model)
+    public async  Task<IActionResult> StopJob(EndJobEmployeeVM model, int id)
     {
-        _jobService.EditJobEmployee(model);
-        return RedirectToAction("Index");
+        var data = DateTime.Now;
+        var userId = _userManager.GetUserId(User);
+        model.EndTime = data;
+        await _jobEmployeeService.StopJobEmployee(model, data, userId, id);
+        return RedirectToAction("ShowOperationList", new { JobId = model.JobId });
     }
 
-    // public IActionResult ShowOperationList(int JobId)
-    // {
-    //     var model = _orderService.GetAllOrders(JobId);
-    // }
+
+
+    public async Task<IActionResult> ListJobEmployee(int id)
+    {
+        var emploList =await _jobEmployeeService.GetAllJobsEmployeeDetails(id);
+        
+        return View(emploList);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditJobEmployee(int id)
+    {
+        var model = await _jobEmployeeService.GetJobEmployeeDetailsAsync(id);
+        return View(model);
+    }
+
+    [HttpPost]
+    public  IActionResult EditJobEmployee(EditJobEmployeeVM model)
+    {
+        _jobEmployeeService.EditJobEmployee(model);
+        return RedirectToAction("ShowOperationList", new { JobId = model.JobId });
+    }
+
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+// [HttpGet]
+// public IActionResult StartJob(int JobId, int pageSize = 10, int pageNo = 1, string searchString = "")
+// {
+//     var model = new MachineSelectionVM();
+//     var listMachines = _machineService.GetAllMachines(pageSize, pageNo, searchString);
+//     model.MachinesForListVms = listMachines.MachinesForListVms;
+//     model.JobId = JobId;
+//     return View(model);
+// }
+//
+// [HttpGet]
+// public IActionResult AddOperation(int jobId)
+// {
+//     var model = new OperationForListVM();
+//     model.JobId = jobId;
+//     return View(model);
+// }
+//
+// [HttpPost]
+// public IActionResult AddOperation(OperationForListVM model)
+// {
+//     _operationService.AddNewOperation(model);
+//     return RedirectToAction("ShowOperationList", new { JobId = model.JobId });
+// }
+
+// [HttpGet]
+// public IActionResult EditOperation(int id)
+// {
+//     var model = _operationService.GetOperationById(id);
+//     return View(model);
+// }
+//
+// [HttpPost]
+// public IActionResult EditOperation(OperationForListVM model)
+// {
+//     _operationService.EditOperation(model);
+//     return RedirectToAction("ShowOperationList", new { JobId = model.JobId });
+// }

@@ -26,5 +26,6 @@ public class MachinesForListVM: IMapFrom<Machine>
 public enum MachineStatus
 {
     Wolna,
-    Zajęta
+    Zajęta,
+    Uszkodzona
 }

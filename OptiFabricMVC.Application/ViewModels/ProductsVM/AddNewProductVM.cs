@@ -15,9 +15,6 @@ public class AddNewProductVM: IMapFrom<Product>
 
     public string Material { get; set; }
     
-    public int? OrderId { get; set; } // Klucz obcy do zamówienia
-    
-    public Order Order { get; set; } // Referencja do zamówienia
 
     public ICollection<Job> Tasks { get; set; } 
 

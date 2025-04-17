@@ -1,0 +1,14 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model OptiFabricMVC.Application.ViewModels.EmployeeVM.AddNewRolesVM
+
+<h2>Dodaj nową rolę</h2>
+
+<form asp-action="AddRole" method="post">
+    <div class="form-group">
+        <label for="Name">Nazwa roli</label>
+        <input asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Dodaj rolę</button>
+</form>

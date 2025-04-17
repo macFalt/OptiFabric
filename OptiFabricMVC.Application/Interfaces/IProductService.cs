@@ -4,9 +4,34 @@ namespace OptiFabricMVC.Application.Interfaces;
 
 public interface IProductService
 {
-    int AddNewProduct(AddNewProductVM model);
-    ListProductVM GetAllProducts(int pageSize, int pageNo, string searchString);
-    ProductDetailsVM GetDetail(int id);
-    void DeleteProduct(int id);
-    void EditProduct(EditProductVM model);
+    Task<int> AddNewProductAsync(AddNewProductVM model);
+    Task<ProductDetailsVM> GetDetailAsync(int id);
+    Task DeleteProductAsync(int id);
+    Task EditProductAsync(EditProductVM model);
+    Task<ListProductVM> GetAllProductsAsync(int pageSize, int pageNo, string searchString);
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// int AddNewProduct(AddNewProductVM model);
+// ListProductVM GetAllProducts(int pageSize, int pageNo, string searchString);
+// ProductDetailsVM GetDetail(int id);
+// void DeleteProduct(int id);
+// void EditProduct(EditProductVM model);

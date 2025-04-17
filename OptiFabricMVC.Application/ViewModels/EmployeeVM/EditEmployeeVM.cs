@@ -8,14 +8,14 @@ public class EditEmployeeVM: IMapFrom<ApplicationUser>
 {
     public string Id { get; set; }
     public string? Name { get; set; }
-
     public string? Surname { get; set; }
 
     public string? Position { get; set; }
 
     public string? Password { get; set; }
-
     public string? NrLogin { get; set; }
+
+    public string  Role { get; set; }
     
     public void ConfigureMapping(Profile profile)
     {

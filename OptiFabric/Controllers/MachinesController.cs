@@ -13,10 +13,9 @@ public class MachinesController : Controller
         _machineService = machineService;
     }
     // GET
-    public IActionResult Index(int pageSize = 10, int pageNo = 1, string searchString = "")
+    public async Task<IActionResult> Index(int pageSize = 10, int pageNo = 1, string searchString = "")
     {
-        var model = _machineService.GetAllMachines(pageSize,pageNo,searchString);
-        return View(model);
+        return View( await _machineService.GetAllMachines(pageSize,pageNo,searchString));
     }
 
     [HttpGet]
@@ -27,35 +26,35 @@ public class MachinesController : Controller
     }
 
     [HttpPost]
-    public IActionResult AddMachine(MachinesForListVM model)
+    public async Task<IActionResult> AddMachine(MachinesForListVM model)
     {
-        var machine = _machineService.AddMachine(model);
+        await  _machineService.AddMachineAsync(model);
         return RedirectToAction("Index");
-    }
+    } 
 
     [HttpGet]
-    public IActionResult EditMachine(int id)
+    public async Task<IActionResult> EditMachine(int id)
     {
-        var model = _machineService.GetDetails(id);
+        var model = await _machineService.GetDetailsAsync(id);
         return View(model);
     }
 
     [HttpPost]
-    public IActionResult EditMachine(EditMachineVM model)
+    public async Task<IActionResult> EditMachine(EditMachineVM model)
     {
-        _machineService.EditMachine(model);
+        await _machineService.EditMachineAsync(model);
         return RedirectToAction("Index");
     }
 
-    public IActionResult Details(int id)
+    public async Task<IActionResult> Details(int id)
     {
-        var machines = _machineService.GetDetails(id);
+        var machines = await _machineService.GetDetailsAsync(id);
         return View(machines);
     }
 
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        _machineService.DeleteMachine(id);
+        await _machineService.DeleteMachineAsync(id);
         return RedirectToAction("Index");
     }
 }

@@ -36,42 +36,23 @@
             
             @foreach (var job in Model.JobsForList)
             {
-                var isCurrentUserAssigned = Model.JobEmployees.Any(je => je.CurrentWorkerId == ViewBag.CurrentUserId && je.IsActive && je.JobId==job.Id ); //&& je.IsActive
+                //var isCurrentUserAssigned = Model.JobEmployees.Any(je => je.CurrentWorkerId == ViewBag.CurrentUserId && je.IsActive && je.JobId==job.Id ); //&& je.IsActive
 
                 <tr>
                     <td>@job.Description</td>
                     <td>@job.RequiredQuantity</td>
                     <td>@job.TotalCompletedQuantity</td>
                     <td>@job.TotalMissingQuantity</td>
-                    <td>@job.IsCompleted</td>
+                    <td>@job.JobStatus</td>
                     <td>@job.CreatedAt</td>
                     <td>@job.CompletedAt</td>
                     <td>@job.Product.DrawingNumber</td>
                     <td>
-                        @Html.ActionLink("Lista operacji","ShowOperationList", new {JobId=job.Id})
-                        @* @if (job.TotalCompletedQuantity >= job.RequiredQuantity) *@
-                        @* { *@
-                        @*     <span>Wykonane</span> *@
-                        @* } *@
-                        @* else *@
-                        @* { *@
-                        @*     @if (isCurrentUserAssigned) *@
-                        @*     { *@
-                        @*         @Html.ActionLink("Zakończ", "StopJob", new { id = job.Id }) *@
-                        @*     } *@
-                        @*     else *@
-                        @*     { *@
-                        @*         @Html.ActionLink("Rozpocznij", "StartJob", new { id = job.Id }) *@
-                        @* *@
-                        @*     } *@
-                        @* *@
-                        @* } *@
+                        @Html.ActionLink("Lista operacji","ShowOperationList", new {JobId=job.Id,ProductId=job.ProductId})
                         @if (User.IsInRole("Manager"))
                         {
                             <td>
                                 @Html.ActionLink("Edytuj", "EditJob", new { id = job.Id })
-                                @Html.ActionLink("Szczegóły", "ListJobEmployee", new { id = job.Id })
-
                             </td>
                         }
                     </td>

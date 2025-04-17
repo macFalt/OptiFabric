@@ -1,0 +1,75 @@
+@model OptiFabricMVC.Application.ViewModels.OperationVM.ListOperationPatternVM
+
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+
+@if (User.IsInRole("Manager"))
+{
+    <p>
+        <a asp-action="AddOperationPattern" asp-route-productId="@Model.ProductId">Dodaj nową operację</a>
+    </p>
+}
+<form asp-action="ShowOperationList" asp-controller="Product" method="get">
+    <div class="row">
+        <input type="text" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
+        <input type="submit" value="Wyszukaj"/>
+    </div>
+    <input type="hidden" asp-for="ProductId" />
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nazwa operacji</th>
+                <th>Opis</th>
+                <th>Przewidziany czas na 1 sztukę</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            @foreach (var operation in Model.OperationPatternForListVms)
+            {
+                <tr>
+                    <td>@operation.Name</td>
+                    <td>@operation.Description</td>
+                    <td>@operation.EstimatedTimePerUnit</td>
+
+                    <td>
+                        @if (User.IsInRole("Manager"))
+                        {
+                        <td>
+                            @Html.ActionLink("Edytuj", "EditOperation", new { id = operation.Id })
+                            @Html.ActionLink("Szczegóły", "ListJobEmployee", new { id = operation.Id })
+
+                        </td>
+                    }
+                    </td>
+                </tr>
+            }
+            </tbody>
+
+        </table>
+    </div>
+    <div class="row">
+        <ul class="pagination">
+            @for (int i = 1; i <= Math.Ceiling(Model.Count / (double)Model.PageSize); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNo="@i"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-searchString="@Model.SearchString">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</form>

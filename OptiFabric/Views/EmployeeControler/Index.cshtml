@@ -1,3 +1,4 @@
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @model OptiFabricMVC.Application.ViewModels.EmployeeVM.ListEmployeeVM
 
 @{
@@ -10,6 +11,7 @@
 {
     <p>
         <a asp-action="AddEmployee">Dodaj nowego pracownika</a>
+        <a asp-action="AddRole">Dodaj nowe stanowisko</a>
     </p>
 }
 <form asp-action="Index" asp-controller="EmployeeControler" method="get">
@@ -33,7 +35,8 @@
                 <tr>
                     <td>@employee.Name</td>
                     <td>@employee.Surname</td>
-                    <td>@employee.Position</td>
+                    <td>@employee.Role</td>
+                    
                     <td>
                         @Html.ActionLink("Edytuj", "EditEmployee", new { id = employee.Id }) 
                         @Html.ActionLink("Szczegóły", "Details", new { id = employee.Id })

@@ -2,7 +2,7 @@ using AutoMapper;
 using OptiFabricMVC.Application.Mapping;
 using OptiFabricMVC.Domain.Model;
 
-namespace OptiFabricMVC.Application.ViewModels.JobVM;
+namespace OptiFabricMVC.Application.ViewModels.JobEmployeeVM;
 
 public class EndJobEmployeeVM : IMapFrom<JobEmployee>
 {
@@ -19,6 +19,8 @@ public class EndJobEmployeeVM : IMapFrom<JobEmployee>
     public DateTime EndTime { get; set; }
 
     public double WorkTime => (EndTime - StartTime).TotalMinutes;
+
+    public int JobId { get; set; }
     
     // public string CurrentWorkerId { get; set; } // ID aktualnego pracownika
     // public ApplicationUser CurrentWorker { get; set; } // Referencja do pracownika

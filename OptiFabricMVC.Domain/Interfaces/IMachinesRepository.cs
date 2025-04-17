@@ -3,11 +3,39 @@ using Machine = OptiFabricMVC.Domain.Model.Machine;
 
 namespace OptiFabricMVC.Domain.Interfaces;
 
-public interface IMachinesRepository
+public interface IMachinesRepository : IGenericRepository<Machine,int>
 {
-    IQueryable<Machine> GetAllMachinesFromDB();
-    int AddMachineForDB(Machine machine);
-    Machine GetMachineDetailFromDB(int id);
-    void EditMachineDB(Machine machine);
-    void DeleteMachineFromDB(int id);
+    bool IsMachineBusy(int selectedMachineId);
+    bool IsMachineBroken(int selectedMachineId);
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// IQueryable<Machine> GetAllMachinesFromDB();
+// int AddMachineForDB(Machine machine);
+// Machine GetMachineDetailFromDB(int id);
+// void EditMachineDB(Machine machine);
+// void DeleteMachineFromDB(int id);

@@ -1,4 +1,5 @@
 using System.Numerics;
+using Microsoft.EntityFrameworkCore;
 using OptiFabricMVC.Domain.Interfaces;
 using OptiFabricMVC.Domain.Model;
 
@@ -13,20 +14,23 @@ public class ShiftRepository : IShiftRepository
         _context = context;
     }
 
-    public void StartShiftData(Shift shift)
+    public async Task StartShiftData(Shift shift)
     {
-        var employee = _context.ApplicationUsers.FirstOrDefault(e => e.Id == shift.UserId);
+        var employee = await _context.ApplicationUsers.FirstOrDefaultAsync(e => e.Id == shift.UserId);
         shift.ApplicationUser = employee;
         _context.Add(shift);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void EndShiftData(Shift shift)
+    public async Task EndShiftData(Shift shift)
     {
-        var activeShift = _context.Shifts.FirstOrDefault(s => s.UserId == shift.UserId && s.isActive == true);
-        activeShift.EndTime = shift.EndTime;
-        activeShift.isActive = false;
-        _context.SaveChanges();
+        var activeShift = await _context.Shifts.FirstOrDefaultAsync(s => s.UserId == shift.UserId && s.isActive == true);
+        if (activeShift != null)
+        {
+            activeShift.EndTime = shift.EndTime;
+            activeShift.isActive = false;
+        }
+        await _context.SaveChangesAsync();
     }
 
     public IQueryable<Shift> GetAllShifts()

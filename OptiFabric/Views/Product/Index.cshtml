@@ -31,7 +31,6 @@
             {
                 <tr>
                     <td>@product.Name</td>
-                    @* <td>@product.DrawingNumber</td> *@
                     <td>
                         <a href="@Url.Content("~/Content/Drawings/" + product.DrawingNumber + ".png")" target="_blank">
                             @product.DrawingNumber
@@ -40,9 +39,11 @@
                     <td>@product.Material</td>
                     <td>
                     @Html.ActionLink("Szczegóły", "Details", new { id = product.Id })
+                    @Html.ActionLink("Lista operacji","ShowOperationList",new {productId=product.Id})
                     @if (User.IsInRole("Manager"))
                     {
                         @Html.ActionLink("Edytuj", "Edit", new { id = product.Id })
+                        @:
                         @Html.ActionLink("Usuń", "Delete", new { id = product.Id })
                     }
                     </td>

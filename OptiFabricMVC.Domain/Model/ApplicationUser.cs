@@ -10,9 +10,9 @@ public class ApplicationUser: IdentityUser
 
     public string? Position { get; set; }
 
-    public string NrLogin { get; set; }
+    public string? NrLogin { get; set; }
 
-    //public ICollection<ShiftApplicationUser> Shifts { get; set; }
+
     
     
     
