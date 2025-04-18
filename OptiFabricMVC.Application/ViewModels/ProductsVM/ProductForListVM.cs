@@ -4,18 +4,13 @@ using OptiFabricMVC.Domain.Model;
 
 namespace OptiFabricMVC.Application.ViewModels.ProductsVM;
 
-public class ProductForListVM: IMapFrom<Product>
+public class ProductForListVM: BaseProductVM, IMapFrom<Product>
 {
-    public int Id  { get; set; }
-
-    public string Name { get; set; }
-
-    public string DrawingNumber { get; set; }
-
-    public string Material { get; set; }
     
     public void ConfigureMapping(Profile profile)
     {
         profile.CreateMap<Product, ProductForListVM>().ReverseMap();
     }
 }
+
+public class ProductForListVmValidation: BaseProductValidator<ProductForListVM>{}

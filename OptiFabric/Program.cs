@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OptiFabric.Data;
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using OptiFabricMVC.Application.Interfaces;
 using OptiFabricMVC.Application.Services;
+using OptiFabricMVC.Application.ViewModels.ProductsVM;
 using OptiFabricMVC.Domain.Interfaces;
 using OptiFabricMVC.Domain.Model;
 using OptiFabricMVC.Infrastructure;
@@ -25,6 +28,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+
 builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 builder.Services.AddTransient<IShiftService, ShiftService>();
@@ -41,8 +45,13 @@ builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericReposito
 builder.Services.AddTransient<IJobEmployeeRepository, JobEmployeeRepository>();
 builder.Services.AddTransient<IJobEmployeeService, JobEmployeeService>();
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+FluentValidationMvcExtensions.AddFluentValidation(builder.Services.AddControllersWithViews(), fv =>
+    {
+        fv.DisableDataAnnotationsValidation = true; 
+    });builder.Services.AddRazorPages();
+
+builder.Services.AddTransient<IValidator<AddNewProductVM>,AddNewProductValidation>();
+
 
 builder.Services.AddAuthorization(options =>
 {

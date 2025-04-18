@@ -39,9 +39,21 @@ public class ProductController : Controller
     [HttpPost]
     public async Task<IActionResult> AddProduct(AddNewProductVM model)
     {
+        if (!ModelState.IsValid)
+        {
+            // walidacja nie przeszła → wracamy do formularza z błędami
+            return View(model);
+        }
+
         await _productService.AddNewProductAsync(model);
         return RedirectToAction("Index");
     }
+    // [HttpPost]
+    // public async Task<IActionResult> AddProduct(AddNewProductVM model)
+    // {
+    //     await _productService.AddNewProductAsync(model);
+    //     return RedirectToAction("Index");
+    // }
 
     public async Task<IActionResult> Details(int id)
     {
