@@ -34,6 +34,12 @@ public class ProductService: IProductService
         return _mapper.Map<ProductDetailsVM>(product);
     }
 
+    public async Task<EditProductVM> GetEditDetailsAsync(int id)
+    {
+        var product = await _productRepository.GetByIdAsync(id);
+        return _mapper.Map<EditProductVM>(product);
+    }
+
     public async Task DeleteProductAsync(int id)
     {
         await _productRepository.DeleteAsync(id);

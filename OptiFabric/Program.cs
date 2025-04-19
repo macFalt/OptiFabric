@@ -45,13 +45,20 @@ builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericReposito
 builder.Services.AddTransient<IJobEmployeeRepository, JobEmployeeRepository>();
 builder.Services.AddTransient<IJobEmployeeService, JobEmployeeService>();
 
-FluentValidationMvcExtensions.AddFluentValidation(builder.Services.AddControllersWithViews(), fv =>
+// FluentValidationMvcExtensions.AddFluentValidation(builder.Services.AddControllersWithViews(), fv =>
+//     {
+//         fv.DisableDataAnnotationsValidation = true; 
+//     });builder.Services.AddRazorPages();
+//
+// builder.Services.AddTransient<IValidator<AddNewProductVM>,AddNewProductValidation>();
+
+
+builder.Services.AddControllersWithViews()
+    .AddFluentValidation(fv =>
     {
-        fv.DisableDataAnnotationsValidation = true; 
-    });builder.Services.AddRazorPages();
-
-builder.Services.AddTransient<IValidator<AddNewProductVM>,AddNewProductValidation>();
-
+        fv.DisableDataAnnotationsValidation = true;
+        fv.RegisterValidatorsFromAssemblyContaining<AddNewProductValidation>();
+    });
 
 builder.Services.AddAuthorization(options =>
 {

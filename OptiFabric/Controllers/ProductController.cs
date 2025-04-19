@@ -41,19 +41,13 @@ public class ProductController : Controller
     {
         if (!ModelState.IsValid)
         {
-            // walidacja nie przeszła → wracamy do formularza z błędami
             return View(model);
         }
 
         await _productService.AddNewProductAsync(model);
         return RedirectToAction("Index");
     }
-    // [HttpPost]
-    // public async Task<IActionResult> AddProduct(AddNewProductVM model)
-    // {
-    //     await _productService.AddNewProductAsync(model);
-    //     return RedirectToAction("Index");
-    // }
+
 
     public async Task<IActionResult> Details(int id)
     {
@@ -69,12 +63,17 @@ public class ProductController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
-        return View(await _productService.GetDetailAsync(id));
+        return View(await _productService.GetEditDetailsAsync(id));
     }
 
     [HttpPost]
     public async Task<IActionResult> Edit(EditProductVM model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+        
        await _productService.EditProductAsync(model);
         return RedirectToAction("Index");
     }

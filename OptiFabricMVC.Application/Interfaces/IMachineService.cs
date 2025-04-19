@@ -7,11 +7,12 @@ namespace OptiFabricMVC.Application.Interfaces;
 public interface IMachineService 
 {
 
-    Task<int> AddMachineAsync(MachinesForListVM model);
+    Task<int> AddMachineAsync(AddNewMachineVM model);
     Task<MachineDetailsVM> GetDetailsAsync(int id);
     Task EditMachineAsync(EditMachineVM model);
     Task DeleteMachineAsync(int id);
     Task<ListMachinesVM> GetAllMachines(int pageSize, int pageNo, string searchString);
+    Task<EditMachineVM> GetEditDetailsAsync(int id);
 }
 
 

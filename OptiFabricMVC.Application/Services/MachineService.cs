@@ -22,7 +22,7 @@ public class MachineService : IMachineService
     }
     
     
-    public async Task<int> AddMachineAsync(MachinesForListVM model)
+    public async Task<int> AddMachineAsync(AddNewMachineVM model)
     {
         var machine = _mapper.Map<Machine>(model);
         var id= await _machinesRepository.AddAsync(machine);
@@ -34,6 +34,13 @@ public class MachineService : IMachineService
     {
         var machine = await _machinesRepository.GetByIdAsync(id);
         var machineVM = _mapper.Map<MachineDetailsVM>(machine);
+        return machineVM;
+    }
+
+    public async Task<EditMachineVM> GetEditDetailsAsync(int id)
+    {
+        var machine = await _machinesRepository.GetByIdAsync(id);
+        var machineVM = _mapper.Map<EditMachineVM>(machine);
         return machineVM;
     }
     

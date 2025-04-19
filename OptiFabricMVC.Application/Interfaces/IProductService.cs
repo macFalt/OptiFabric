@@ -6,6 +6,7 @@ public interface IProductService
 {
     Task<int> AddNewProductAsync(AddNewProductVM model);
     Task<ProductDetailsVM> GetDetailAsync(int id);
+    Task<EditProductVM> GetEditDetailsAsync(int id);
     Task DeleteProductAsync(int id);
     Task EditProductAsync(EditProductVM model);
     Task<ListProductVM> GetAllProductsAsync(int pageSize, int pageNo, string searchString);

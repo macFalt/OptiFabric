@@ -12,7 +12,6 @@ public class MachinesController : Controller
     {
         _machineService = machineService;
     }
-    // GET
     public async Task<IActionResult> Index(int pageSize = 10, int pageNo = 1, string searchString = "")
     {
         return View( await _machineService.GetAllMachines(pageSize,pageNo,searchString));
@@ -21,13 +20,17 @@ public class MachinesController : Controller
     [HttpGet]
     public IActionResult AddMachine()
     {
-        var model = new MachinesForListVM();
+        var model = new AddNewMachineVM();
         return View(model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddMachine(MachinesForListVM model)
+    public async Task<IActionResult> AddMachine(AddNewMachineVM model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
         await  _machineService.AddMachineAsync(model);
         return RedirectToAction("Index");
     } 
@@ -35,16 +38,21 @@ public class MachinesController : Controller
     [HttpGet]
     public async Task<IActionResult> EditMachine(int id)
     {
-        var model = await _machineService.GetDetailsAsync(id);
+        var model = await _machineService.GetEditDetailsAsync(id);
         return View(model);
     }
-
     [HttpPost]
     public async Task<IActionResult> EditMachine(EditMachineVM model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
         await _machineService.EditMachineAsync(model);
         return RedirectToAction("Index");
     }
+
 
     public async Task<IActionResult> Details(int id)
     {
