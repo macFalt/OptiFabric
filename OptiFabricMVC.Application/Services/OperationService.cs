@@ -39,7 +39,7 @@ public class OperationService : IOperationService
 
     public async Task<OperationPatternForListVM> GetOperationPatternAsync(int id)
     {
-        var operation = _operationRepository.GetByIdAsync(id);
+        var operation = await _operationRepository.GetByIdAsync(id);
         return _mapper.Map<OperationPatternForListVM>(operation);
     }
 

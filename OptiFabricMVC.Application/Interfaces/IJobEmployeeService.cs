@@ -6,14 +6,11 @@ namespace OptiFabricMVC.Application.Interfaces;
 
 public interface IJobEmployeeService
 {
-    Task<ListJobEmployeeVM> GetAllJobEmployeesAsync();
+    Task<List<JobEmployeeForListVM>> GetAllJobEmployeesByJobIdAsync(int JobId);
     Task<DetailsJobEmployeeVM> GetJobEmployeeDetailsAsync(int id);
-    // Task EditJobEmployeeAsync(EditJobEmployeeVM model);
-    void EditJobEmployee(EditJobEmployeeVM model);
-    Task<List<DetailsJobEmployeeVM>> GetAllJobsEmployeeDetails(int id);
-   // void StartJobEmployee2(DateTime data, string? userId, int id, int selectedMachineId,int JobId);
+    Task EditJobEmployee(EditJobEmployeeVM model);
+    Task<List<DetailsJobEmployeeVM>> GetAllJobsEmployeeDetails(int operationId);
    Task StartJobEmployee2(DateTime data, string? userId, int id, int selectedMachineId, int jobId);
-    //void StopJobEmployee(EndJobEmployeeVM model, DateTime data, string? userId, int id);
 
     Task StopJobEmployee(EndJobEmployeeVM model, DateTime data, string? userId, int id);
 }

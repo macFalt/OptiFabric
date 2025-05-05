@@ -29,6 +29,7 @@ public class DetailsJobEmployeeVM : IMapFrom<JobEmployee>
 
     public int JobId { get; set; }
     public int MachineId { get; set; }
+    public int OperationId { get; set; }
     
     public TimeSpan EstimatedTimePerUnit { get; set; }
 
@@ -38,7 +39,6 @@ public class DetailsJobEmployeeVM : IMapFrom<JobEmployee>
     public void ConfigureMapping(Profile profile)
     {
         profile.CreateMap<JobEmployee, DetailsJobEmployeeVM>().ReverseMap();
-        profile.CreateMap<ApplicationUser, DetailsJobEmployeeVM>().ReverseMap();
         profile.CreateMap<Operation, DetailsJobEmployeeVM>()
             .ForMember(dest => dest.EstimatedTimePerUnit, opt => opt.MapFrom(src => src.EstimatedTimePerUnit));
 

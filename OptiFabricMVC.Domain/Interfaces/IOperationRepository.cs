@@ -5,10 +5,14 @@ namespace OptiFabricMVC.Domain.Interfaces;
 public interface IOperationRepository : IGenericRepository<OperationPattern,int>
 {
     IQueryable<OperationPattern> GetAllOperationsPatternFromDB(int ProductId);
+    
     IQueryable<Operation> GetAllOperationsFromDB();
-   // Operation GetOperationFromDB(int id);
 
    Task<Operation> GetOperationFromDB(int id);
+
+   Task<List<Operation>> GetAllOperationsByJobIdFromDB(int JobId);
+
+   Task UpdateOperation(Operation operation);
 
 }
 

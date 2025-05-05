@@ -39,7 +39,7 @@
                     <td>@product.Material</td>
                     <td>
                     @Html.ActionLink("Szczegóły", "Details", new { id = product.Id })
-                    @Html.ActionLink("Lista operacji","ShowOperationList",new {productId=product.Id})
+                    @Html.ActionLink("Lista operacji","ShowOperationList", "Operation",new {productId=product.Id})
                     @if (User.IsInRole("Manager"))
                     {
                         @Html.ActionLink("Edytuj", "Edit", new { id = product.Id })

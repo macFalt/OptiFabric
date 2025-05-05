@@ -18,7 +18,7 @@ public class MachinesForListVMValidator: BaseMachineValidator<MachinesForListVM>
 
 public enum MachineStatus
 {
-    Wolna,
-    Zajęta,
-    Uszkodzona
+    Wolna=1,
+    Zajęta=2,
+    Uszkodzona=3
 }

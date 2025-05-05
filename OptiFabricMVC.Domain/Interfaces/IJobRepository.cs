@@ -5,7 +5,10 @@ namespace OptiFabricMVC.Domain.Interfaces;
 public interface IJobRepository : IGenericRepository<Job,int>
 {
     Task<int> AddJobToDB(Job job);
-    List<Job> GetAllJobsFromDB();
+    IQueryable<Job> GetAllJobsFromDB();
+
+
+
 }
 
 

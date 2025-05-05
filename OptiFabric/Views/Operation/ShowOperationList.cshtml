@@ -13,7 +13,7 @@
         <a asp-action="AddOperationPattern" asp-route-productId="@Model.ProductId">Dodaj nową operację</a>
     </p>
 }
-<form asp-action="ShowOperationList" asp-controller="Product" method="get">
+<form asp-action="ShowOperationList" asp-controller="Operation" method="get">
     <div class="row">
         <input type="text" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
         <input type="submit" value="Wyszukaj"/>
@@ -45,8 +45,6 @@
                         {
                         <td>
                             @Html.ActionLink("Edytuj", "EditOperation", new { id = operation.Id })
-                            @Html.ActionLink("Szczegóły", "ListJobEmployee", new { id = operation.Id })
-
                         </td>
                     }
                     </td>

@@ -29,6 +29,7 @@ public class EditJobEmployeeVM : IMapFrom<JobEmployee>
 
     public int JobId { get; set; }
     public int MachineId { get; set; }
+    public int OperationId { get; set; }
     
     public TimeSpan EstimatedTimePerUnit { get; set; }
 

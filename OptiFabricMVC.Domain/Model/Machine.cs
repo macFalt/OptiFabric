@@ -17,7 +17,7 @@ public class Machine : IEntity<int>
 }
 public enum MachineStatus
 {
-    Wolna,
-    Zajęta,
-    Uszkodzona
+    Wolna=1,
+    Zajęta=2,
+    Uszkodzona=3
 }

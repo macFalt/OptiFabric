@@ -12,6 +12,7 @@
         <form asp-action="EditJobEmployee">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="JobId" />
+            <input type="hidden" asp-for="OperationId" />
             <div class="form-group">
                 <label asp-for="CompletedQuantity" class="control-label">Ilość wykonanych sztuk</label>
                 <input asp-for="CompletedQuantity" class="form-control"/>

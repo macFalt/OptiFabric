@@ -14,33 +14,20 @@ public class JobEmployeeRepository : GenericRepository<JobEmployee,int> ,IJobEmp
     }
     
     
-    public IQueryable<JobEmployee> GetAllJobsEmployeeByIdFromDB(int id)
+    public async Task<List<JobEmployee>> GetAllJobsEmployeeByOperationIdFromDB(int id)
     {
-        var JobEmployeeByJobId = _context.JobEmployees.Where(x => x.OperationId == id);
-        return JobEmployeeByJobId;
+        return await _context.JobEmployees
+            .Where(x => x.OperationId == id)
+            .ToListAsync();
     }
-
     
-    public void EditJobEmployee(JobEmployee jobEmployee)
+    public async Task<List<JobEmployee>> GetAllJobEmployeeByJobId(int JobId)
     {
-        var jobEmp =  _context.JobEmployees.FirstOrDefault(je => je.Id==jobEmployee.Id);
-        jobEmp.CompletedQuantity = jobEmployee.CompletedQuantity;
-        jobEmp.MissingQuantity = jobEmployee.MissingQuantity;
-        
-        var jel = _context.JobEmployees.Where(je=>je.OperationId==jobEmp.OperationId).ToList();
-        var operations=_context.Operations.Where(op=>op.JobId==jobEmp.JobId).ToList();
-
-        foreach (var operation in operations)
-        {
-            operation.CompletedQuantity = jel
-                .Where(emp => emp.OperationId == operation.Id)  
-                .Sum(emp => emp.CompletedQuantity); 
-            operation.MissingQuantity=jel
-                .Where(emp => emp.OperationId == operation.Id)
-                .Sum(emp => emp.MissingQuantity);
-        }
-         _context.SaveChanges();  
+        return await _context.JobEmployees
+            .Where(x=>x.JobId==JobId)
+            .ToListAsync();
     }
+
     
     
     public async Task StartJobEmployee(JobEmployee jobEmployee)
@@ -115,6 +102,19 @@ public class JobEmployeeRepository : GenericRepository<JobEmployee,int> ,IJobEmp
         await _context.SaveChangesAsync();
     }
     
+    
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
+    
+    
+    
+    public async Task UpdateJobEmployee(JobEmployee jobEmployee)
+    {
+        _context.Entry(jobEmployee).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+    }
 }
 
 

@@ -7,7 +7,7 @@ public class ListOperationVM
 {
     public List<OperationForListVM> OperationForListVms { get; set; }
     
-    public ListJobEmployeeVM JobEmployees { get; set; }
+    public List<JobEmployeeForListVM> JobEmployees { get; set; }
     
     public int JobId { get; set; }
 

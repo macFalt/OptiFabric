@@ -20,6 +20,14 @@ public class OperationRepository : GenericRepository<OperationPattern,int>, IOpe
         return operations;
     }
     
+    public async Task<List<Operation>> GetAllOperationsByJobIdFromDB(int JobId)
+    {
+        return await _context.Operations
+            .Where(op => op.JobId == JobId)
+            .ToListAsync();
+    }
+
+    
     public IQueryable<Operation> GetAllOperationsFromDB()
     {
         var jel = _context.JobEmployees.ToList();
@@ -46,7 +54,12 @@ public class OperationRepository : GenericRepository<OperationPattern,int>, IOpe
     {
         return await _context.Operations.FirstOrDefaultAsync(op => op.Id == id);
     }
-    
+
+    public async Task UpdateOperation(Operation operation)
+    {
+        _context.Entry(operation).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+    }
     
     
 

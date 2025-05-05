@@ -41,7 +41,7 @@
 
             @foreach (var operation in Model.OperationForListVms)
             {
-                var isCurrentUserAssigned = Model.JobEmployees.JobEmployeeForListVms.Any(je => je.CurrentWorkerId == ViewBag.CurrentUserId && je.IsActive && je.OperationId==operation.Id ); //&& je.IsActive
+                var isCurrentUserAssigned = Model.JobEmployees.Any(je => je.CurrentWorkerId == ViewBag.CurrentUserId && je.IsActive && je.OperationId==operation.Id ); //&& je.IsActive
 
                 <tr>
                     <td>@operation.Name</td>
@@ -74,8 +74,8 @@
                         @if (User.IsInRole("Manager"))
                         {
                         <td>
-                            @Html.ActionLink("Edytuj", "EditOperation", new { id = operation.Id, opid=operation.OperationPatternId })
-                            @Html.ActionLink("Szczegóły", "ListJobEmployee", new { id = operation.Id })
+                            @* @Html.ActionLink("Edytuj", "EditOperation", new { id = operation.Id, opid=operation.OperationPatternId }) *@
+                            @Html.ActionLink("Szczegóły", "ListJobEmployee", new { operationId = operation.Id })
 
                         </td>
                     }

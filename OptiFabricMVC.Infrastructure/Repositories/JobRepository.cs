@@ -15,59 +15,24 @@ public class JobRepository : GenericRepository<Job,int> ,IJobRepository
 
     public async Task<int> AddJobToDB(Job job)
     {
-        var productFromDb = await _context.Products.FirstOrDefaultAsync(p => p.Id == job.ProductId);
-        job.Product = productFromDb;
-        job.JobStatus = JobStatus.NotStarted;
-        var operationPatterns = _context.OperationPatterns.Where(op => op.ProductId == productFromDb.Id).ToList();
-        job.Operations = operationPatterns.Select(opPattern => new Operation
-        {
-            Name = opPattern.Name,
-            Description = opPattern.Description,
-            EstimatedTimePerUnit = opPattern.EstimatedTimePerUnit,
-            RequiredQuantity = job.RequiredQuantity,
-            CompletedQuantity = 0,
-            MissingQuantity = 0,
-            OperationStatus = OperationStatus.NotStarted,
-            OperationPatternId = opPattern.Id
-        }).ToList();
         _context.Jobs.Add(job);
         await _context.SaveChangesAsync();
         return job.Id;
     }
 
-    public List<Job> GetAllJobsFromDB()
+    public IQueryable<Job> GetAllJobsFromDB()
     {
         var jobs = _context.Jobs
-            .Include(j=>j.Operations)
-            .Include(j=>j.Product)
-            .ToList();
+            .Include(j => j.Operations)
+            .Include(j => j.Product)
+            .AsQueryable();
         
-        foreach (var job in jobs)
-        {
-           
-            var lastOperation = job.Operations
-                .OrderByDescending(op => op.Id)
-                .FirstOrDefault();
-
-            if (lastOperation != null)
-            {
-                job.TotalCompletedQuantity = lastOperation.CompletedQuantity;
-                job.TotalMissingQuantity = lastOperation.MissingQuantity;
-            }
-        
-            if ((job.TotalCompletedQuantity+job.TotalMissingQuantity) >= job.RequiredQuantity)
-            {
-                job.JobStatus = JobStatus.Completed;
-                job.CompletedAt = DateTime.Now;
-            }
-            else
-            {
-                job.JobStatus = JobStatus.InProgress;
-            }
-        }
         return jobs;
     }
+
+
     
+
     
 
     

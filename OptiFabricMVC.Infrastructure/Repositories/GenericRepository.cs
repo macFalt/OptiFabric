@@ -22,6 +22,8 @@ public class GenericRepository<TEntity,TKey> : IGenericRepository<TEntity,TKey> 
     public async Task<TEntity?> GetByIdAsync(TKey id)
     {
         return await _context.Set<TEntity>().FindAsync(id);
+        
+        
     }
     
     public async Task UpdateAsync(TEntity entity)

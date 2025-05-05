@@ -6,9 +6,13 @@ public interface IJobEmployeeRepository : IGenericRepository<JobEmployee,int>
 {
     Task StartJobEmployee(JobEmployee jobEmployee);
     Task StopJobEmployee(JobEmployee jobEmployee, int id, string userId, int JobId);
-    IQueryable<JobEmployee> GetAllJobsEmployeeByIdFromDB(int id);
-    void EditJobEmployee(JobEmployee jobEmployee);
+    Task<List<JobEmployee>> GetAllJobsEmployeeByOperationIdFromDB(int id);
+    Task<List<JobEmployee>> GetAllJobEmployeeByJobId(int JobId);
+    Task UpdateJobEmployee(JobEmployee jobEmployee);
+    Task SaveChangesAsync();
     
+    
+
 }
 
 

@@ -56,6 +56,13 @@ public class JobController : Controller
     [HttpPost]
     public async Task<IActionResult> AddJob(AddNewJobVM model)
     {
+        if (!ModelState.IsValid)
+        {
+            var listProduct = await _productService.GetAllProductsAsync(10,1,"");
+            model.Products = listProduct.ProductsListVM;
+
+            return View(model);
+        }
         var job = await _jobService.AddJob(model);
         return RedirectToAction("Index");
     }
@@ -80,11 +87,9 @@ public class JobController : Controller
     public async Task<IActionResult> ShowOperationList(int JobId,int ProductId  ,int pageSize = 10, int pageNo = 1, string searchString = "")
     {
         var model = _operationService.GetAllOperations(JobId,ProductId, pageSize, pageNo, searchString);
-        model.JobId = JobId;
-        var emploList = await _jobEmployeeService.GetAllJobEmployeesAsync();
+        var emploList = await _jobEmployeeService.GetAllJobEmployeesByJobIdAsync(JobId);
         model.JobEmployees = emploList;
-        var userId = _userManager.GetUserId(User);
-        ViewBag.CurrentUserId = userId;
+        ViewBag.CurrentUserId = _userManager.GetUserId(User);
         return View(model);
     }
     
@@ -94,12 +99,12 @@ public class JobController : Controller
 
     
     [HttpGet]
-    public async Task<IActionResult> StartJob(int JobId, int pageSize = 10, int pageNo = 1, string searchString = "")
+    public async Task<IActionResult> StartJob(int jobId, int pageSize = 10, int pageNo = 1, string searchString = "")
     {
         var model = new MachineSelectionVM();
         var listMachines = await _machineService.GetAllMachines(pageSize, pageNo, searchString);
         model.MachinesForListVms = listMachines.MachinesForListVms;
-        model.JobId = JobId;
+        model.JobId = jobId;
         return View(model);
     }
 
@@ -111,13 +116,14 @@ public class JobController : Controller
         {
             var data = DateTime.Now;
             var userId = _userManager.GetUserId(User);
-            await _jobEmployeeService.StartJobEmployee2(data, userId, id, selectedMachineId, JobId);
-            return RedirectToAction("ShowOperationList", new { JobId = JobId });
+            var jobId=JobId;
+            await _jobEmployeeService.StartJobEmployee2(data, userId, id, selectedMachineId, jobId);
+            return RedirectToAction("ShowOperationList", new { JobId = jobId });
         }
         catch (InvalidOperationException ex)
         {
             TempData["ErrorMessage"] = ex.Message;
-            return RedirectToAction("StartJob");
+            return RedirectToAction("StartJob", new { jobId = JobId });
         }
     }
 
@@ -141,28 +147,30 @@ public class JobController : Controller
 
 
 
-    public async Task<IActionResult> ListJobEmployee(int id)
+    public async Task<IActionResult> ListJobEmployee(int operationId)
     {
-        var emploList =await _jobEmployeeService.GetAllJobsEmployeeDetails(id);
+        var emploList =await _jobEmployeeService.GetAllJobsEmployeeDetails(operationId);
         
         return View(emploList);
     }
 
     [HttpGet]
-    public async Task<IActionResult> EditJobEmployee(int id)
+    public async Task<IActionResult> EditJobEmployee(int id,int operationId)
     {
         var model = await _jobEmployeeService.GetJobEmployeeDetailsAsync(id);
         return View(model);
     }
 
     [HttpPost]
-    public  IActionResult EditJobEmployee(EditJobEmployeeVM model)
+    public async Task<IActionResult> EditJobEmployee(EditJobEmployeeVM model)
     {
-        _jobEmployeeService.EditJobEmployee(model);
+        
+        await _jobEmployeeService.EditJobEmployee(model);
         return RedirectToAction("ShowOperationList", new { JobId = model.JobId });
     }
 
-    
+
+
 }
 
 
