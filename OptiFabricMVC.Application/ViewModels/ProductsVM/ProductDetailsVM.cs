@@ -13,4 +13,3 @@ public class ProductDetailsVM: BaseProductVM, IMapFrom<Product>
     }
 }
 
-public class ProductDetailsVmValidation: BaseProductValidator<ProductDetailsVM>{}

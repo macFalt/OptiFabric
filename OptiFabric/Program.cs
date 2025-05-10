@@ -7,6 +7,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using OptiFabricMVC.Application.Interfaces;
 using OptiFabricMVC.Application.Services;
+using OptiFabricMVC.Application.Validators.ProductV;
 using OptiFabricMVC.Application.ViewModels.ProductsVM;
 using OptiFabricMVC.Domain.Interfaces;
 using OptiFabricMVC.Domain.Model;
@@ -57,7 +58,7 @@ builder.Services.AddControllersWithViews()
     .AddFluentValidation(fv =>
     {
         fv.DisableDataAnnotationsValidation = true;
-        fv.RegisterValidatorsFromAssemblyContaining<AddNewProductValidation>();
+        fv.RegisterValidatorsFromAssemblyContaining<AddNewProductValidator>();
     });
 
 builder.Services.AddAuthorization(options =>

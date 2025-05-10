@@ -4,42 +4,14 @@ using OptiFabricMVC.Domain.Model;
 
 namespace OptiFabricMVC.Application.ViewModels.JobEmployeeVM;
 
-public class JobEmployeeForListVM : IMapFrom<JobEmployee>
+public class JobEmployeeForListVM : BaseJobEmployeeVM, IMapFrom<JobEmployee>
 {
-    public int Id { get; set; }
-
-    public string EmployeeName { get; set; }
-
-    public string EmployeeSurname { get; set; }
-
-    public string FullName => $"{EmployeeName} {EmployeeSurname}".Trim();
-    
-    public string? EmployeeComments { get; set; } // Uwagi pracownika
-    
-    public int CompletedQuantity { get; set; } // Ilość wykonanych sztuk
-    
-        
-    public int MissingQuantity { get; set; } // Ilość braków
-    
-    public DateTime StartTime { get; set; } 
-    
-    public DateTime EndTime { get; set; }
-    
-    public string CurrentWorkerId { get; set; } // ID aktualnego pracownika
-
-    public int JobId { get; set; }
-    public int MachineId { get; set; }
-    
-    public TimeSpan EstimatedTimePerUnit { get; set; }
-
-    public double Efficiency { get; set; }
     public bool IsActive { get; set; }
     
-    public int OperationId { get; set; }
-
-
+    
     public void ConfigureMapping(Profile profile)
     {
         profile.CreateMap<JobEmployee, JobEmployeeForListVM>().ReverseMap();
     }
 }
+

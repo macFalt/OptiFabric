@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection.PortableExecutable;
 using FluentValidation;
+using OptiFabricMVC.Application.ViewModels.MachinesVM;
 
-namespace OptiFabricMVC.Application.ViewModels.MachinesVM;
+namespace OptiFabricMVC.Application.Validators.MachineV;
 
 public class BaseMachineValidator<T> : AbstractValidator<T> where T : BaseMachineVM
 {

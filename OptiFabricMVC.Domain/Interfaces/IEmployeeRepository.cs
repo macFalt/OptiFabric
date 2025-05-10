@@ -7,7 +7,8 @@ public interface IEmployeeRepository
      string AddEmployee(ApplicationUser employee);
 
     IQueryable<ApplicationUser> GetAllEmployeeFromDB();
-    ApplicationUser GetEmployee(string id);
+
+    Task<ApplicationUser> GetEmployee(string id);
     void DeleteEmployee(string id);
     void UpdateEmployee(ApplicationUser employee);
     void DeleteShiftFromDB(int id);

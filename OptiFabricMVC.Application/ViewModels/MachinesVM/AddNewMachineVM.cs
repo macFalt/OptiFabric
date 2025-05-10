@@ -14,5 +14,4 @@ public class AddNewMachineVM: BaseMachineVM, IMapFrom<Machine>
     }
 }
 
-public class AddNewMachineValidator : BaseMachineValidator<AddNewMachineVM>{}
 

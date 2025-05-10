@@ -14,7 +14,6 @@ public class MachinesForListVM: BaseMachineVM, IMapFrom<Machine>
     }
 }
 
-public class MachinesForListVMValidator: BaseMachineValidator<MachinesForListVM>{}
 
 public enum MachineStatus
 {

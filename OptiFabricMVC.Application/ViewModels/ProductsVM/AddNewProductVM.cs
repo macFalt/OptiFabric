@@ -14,7 +14,6 @@ public class AddNewProductVM: BaseProductVM, IMapFrom<Product>
     }
 }
 
-public class AddNewProductValidation : BaseProductValidator<AddNewProductVM> {}
 
 
 

@@ -6,6 +6,7 @@ using OptiFabricMVC.Application.ViewModels.MachinesVM;
 using OptiFabricMVC.Domain.Interfaces;
 using OptiFabricMVC.Domain.Model;
 using OptiFabricMVC.Infrastructure.Common;
+using MachineStatus = OptiFabricMVC.Domain.Model.MachineStatus;
 
 namespace OptiFabricMVC.Application.Services;
 
@@ -81,6 +82,22 @@ public class MachineService : IMachineService
 
         return machinesList;
     }
+
+    public async Task<bool> IsMachineBusyAsync(int machineId)
+    {
+        var machine = await _machinesRepository.GetByIdAsync(machineId);
+        if (machine == null) throw new InvalidOperationException("Maszyna nie istnieje");
+        return machine.Status== MachineStatus.Zajęta;
+    }
+    
+    public async Task<bool> IsMachineBrokenAsync(int machineId)
+    {
+        var machine = await _machinesRepository.GetByIdAsync(machineId);
+        if (machine == null) throw new InvalidOperationException("Maszyna nie istnieje");
+        return machine.Status== MachineStatus.Uszkodzona;
+    }
+    
+    
 
     
 }

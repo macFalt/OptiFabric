@@ -10,9 +10,9 @@ public interface IJobEmployeeService
     Task<DetailsJobEmployeeVM> GetJobEmployeeDetailsAsync(int id);
     Task EditJobEmployee(EditJobEmployeeVM model);
     Task<List<DetailsJobEmployeeVM>> GetAllJobsEmployeeDetails(int operationId);
-   Task StartJobEmployee2(DateTime data, string? userId, int id, int selectedMachineId, int jobId);
+   Task StartJobEmployeeAsync(DateTime data, string? userId, int id, int selectedMachineId, int jobId);
 
-    Task StopJobEmployee(EndJobEmployeeVM model, DateTime data, string? userId, int id);
+    Task StopJobEmployeeAsync(EndJobEmployeeVM model, string? userId);
 }
 
 

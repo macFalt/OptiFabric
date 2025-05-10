@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using OptiFabricMVC.Application.Interfaces;
 using OptiFabricMVC.Application.ViewModels.JobEmployeeVM;
@@ -18,12 +19,13 @@ public class JobEmployeeService : IJobEmployeeService
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IMachinesRepository _machinesRepository;
     private readonly ILogger _logger;
+    private readonly IMachineService _machineService;
 
 
     public JobEmployeeService(IMapper mapper, IJobEmployeeRepository jobEmployeeRepository,
         IJobRepository jobRepository, IOperationRepository operationRepository,
         IEmployeeRepository employeeRepository, IMachinesRepository machinesRepository,
-        ILogger<JobEmployeeService> logger)
+        ILogger<JobEmployeeService> logger, IMachineService machineService)
     {
         _mapper = mapper;
         _jobEmployeeRepository = jobEmployeeRepository;
@@ -32,45 +34,163 @@ public class JobEmployeeService : IJobEmployeeService
         _employeeRepository = employeeRepository;
         _machinesRepository = machinesRepository;
         _logger = logger;
+        _machineService = machineService;
+    }
+    
+    //*********************************************************
+    //************************StartJob*************************
+    //*********************************************************
+    public async Task StartJobEmployeeAsync(DateTime startTime, string? userId, int operationId, int machineId, int jobId)
+    {
+        await ValidateMachineStatusAsync(machineId);
+
+        var jobEmployee = CreateJobEmployee(startTime, userId, operationId, machineId, jobId);
+
+        await UpdateOperationStatusAsync(operationId);
+        await UpdateJobStatusAsync(jobId);
+        await UpdateMachineStatusAsync(machineId);
+
+        await _jobEmployeeRepository.StartJobEmployee(jobEmployee);
     }
 
-
-    public async Task StartJobEmployee2(DateTime data, string? userId, int id, int selectedMachineId, int jobId)
+    private async Task ValidateMachineStatusAsync(int machineId)
     {
-        if (_machinesRepository.IsMachineBusy(selectedMachineId))
-        {
+        if (await _machineService.IsMachineBusyAsync(machineId))
             throw new InvalidOperationException("Maszyna jest już zajęta");
-        }
 
-
-        if (_machinesRepository.IsMachineBroken(selectedMachineId))
-        {
+        if (await _machineService.IsMachineBrokenAsync(machineId))
             throw new InvalidOperationException("Awaria maszyny");
+    }
+
+    private JobEmployee CreateJobEmployee(DateTime startTime, string? userId, int operationId, int machineId, int jobId)
+    {
+        return new JobEmployee
+        {
+            StartTime = startTime,
+            CurrentWorkerId = userId,
+            OperationId = operationId,
+            MachineId = machineId,
+            JobId = jobId,
+            CompletedQuantity = 0,
+            MissingQuantity = 0,
+            EmployeeComments = string.Empty,
+            IsActive = true
+        };
+    }
+
+    private async Task UpdateOperationStatusAsync(int operationId)
+    {
+        var operation = await _operationRepository.GetOperationFromDB(operationId);
+        if (operation != null)
+        {
+            operation.OperationStatus = OperationStatus.InProgress;
+            await _operationRepository.UpdateOperation(operation);
+        }
+    }
+
+    private async Task UpdateJobStatusAsync(int jobId)
+    {
+        var job = await _jobRepository.GetByIdAsync(jobId);
+        if (job != null)
+        {
+            job.JobStatus = JobStatus.InProgress;
+            job.ActivEmployeeJob = true;
+            await _jobRepository.UpdateAsync(job);
+        }
+    }
+
+    private async Task UpdateMachineStatusAsync(int machineId)
+    {
+        var machine = await _machinesRepository.GetByIdAsync(machineId);
+        if (machine != null)
+        {
+            machine.Status = MachineStatus.Zajęta;
+            await _machinesRepository.UpdateAsync(machine);
+        }
+    }
+    
+    //*********************************************************
+    //*********************************************************
+    //*********************************************************
+    
+    //*********************************************************
+    //*********************StopJobEmployee*********************
+    //*********************************************************
+    public async Task StopJobEmployeeAsync(EndJobEmployeeVM model, string? userId)
+    {
+        var job=await _jobRepository.GetByIdAsync(model.JobId);
+        var jobEmp=await _jobEmployeeRepository.GetActiveJobEmployeeByUserId(userId);
+        var operation= await _operationRepository.GetOperationFromDB(model.OperationId);
+        var machine= await _machinesRepository.GetByIdAsync(jobEmp.MachineId);
+        var operations=await _operationRepository.GetAllOperationsByJobIdFromDB(model.JobId);
+
+        if (operation != null)
+        {
+            UpdateOperation(operation,model);
         }
 
-        var job = new JobEmployee()
+        if (jobEmp != null)
         {
-            CompletedQuantity = 0,
-            EmployeeComments = "",
-            MissingQuantity = 0,
-            StartTime = data,
-            CurrentWorkerId = userId,
-            OperationId = id,
-            MachineId = selectedMachineId,
-            JobId = jobId
-        };
+            UpdateJobEmployee(jobEmp,model);
+        }
+        
+        if (machine != null)
+        {
+            machine.Status= MachineStatus.Wolna;
+        }
 
-
-        await _jobEmployeeRepository.StartJobEmployee(job);
+        if (job != null)
+        {
+            UpdateJob(operations,model,job);
+        }
+        await _jobEmployeeRepository.SaveChangesAsync();
     }
 
-    public async Task StopJobEmployee(EndJobEmployeeVM model, DateTime data, string? userId, int id)
+    private void UpdateOperation(Operation operation, EndJobEmployeeVM model)
     {
-        var endJob = _mapper.Map<JobEmployee>(model);
-        var JobId = model.JobId;
-        await _jobEmployeeRepository.StopJobEmployee(endJob, id, userId, JobId);
+            operation.CompletedQuantity+=model.CompletedQuantity;
+            operation.MissingQuantity+=model.MissingQuantity; 
+            operation.OperationStatus = operation.CompletedQuantity+operation.MissingQuantity==operation.RequiredQuantity ? OperationStatus.Completed : OperationStatus.InProgress;
+        
     }
 
+    private void UpdateJobEmployee(JobEmployee jobEmp, EndJobEmployeeVM model)
+    {
+        jobEmp.EndTime = model.EndTime;
+        jobEmp.CompletedQuantity = model.CompletedQuantity;
+        jobEmp.EmployeeComments = model.EmployeeComments;
+        jobEmp.MissingQuantity = model.MissingQuantity;
+        jobEmp.IsActive = false; 
+    }
+
+    private void UpdateJob(List<Operation> operations, EndJobEmployeeVM model,Job job)
+    {
+        var lastOperation = operations
+            .OrderByDescending(op => op.Id)
+            .FirstOrDefault();
+        
+
+        if (lastOperation != null)
+        {
+            job.TotalCompletedQuantity = lastOperation.CompletedQuantity;
+            job.TotalMissingQuantity = lastOperation.MissingQuantity;
+        }
+        
+        if ((job.TotalCompletedQuantity+job.TotalMissingQuantity) >= job.RequiredQuantity)
+        {
+            job.JobStatus = JobStatus.Completed;
+            job.CompletedAt = model.EndTime;
+        }
+        else
+        {
+            job.JobStatus = JobStatus.InProgress;
+        }
+    }
+    
+    
+    //*********************************************************
+    //*********************************************************
+    //*********************************************************
 
     public async Task<List<JobEmployeeForListVM>> GetAllJobEmployeesByJobIdAsync(int JobId)
     {
@@ -85,7 +205,7 @@ public class JobEmployeeService : IJobEmployeeService
         var jobEmployeeList = _mapper.Map<List<DetailsJobEmployeeVM>>(jel);
         foreach (var jobEmployee in jobEmployeeList)
         {
-            var user = _employeeRepository.GetEmployee(jobEmployee.CurrentWorkerId);
+            var user = await _employeeRepository.GetEmployee(jobEmployee.CurrentWorkerId);
 
             if (user != null)
             {
@@ -132,39 +252,3 @@ public class JobEmployeeService : IJobEmployeeService
     }
 }
 
-
-//  public void StartJobEmployee(DateTime data, string? userId, int id)
-// {
-//     var job = new JobEmployee()
-//     {
-//         CompletedQuantity = 0,
-//         EmployeeComments = "",
-//         MissingQuantity = 0,
-//         StartTime = data,
-//         CurrentWorkerId = userId,
-//         OperationId = id
-//     };
-//
-//     _jobEmployeeRepository.StartJobEmployee(job);
-// }
-
-
-// public List<JobEmployee> GetAllJobsEmployee()
-// {
-//     var jel = _jobEmployeeRepository.GetAllJobsEmployeeFromDB();
-//     return _mapper.Map<List<JobEmployee>>(jel);
-// }
-//
-
-// public DetailsJobEmployeeVM GetJobEmployeeDetailById(int id)
-// {
-//     var jobEmployee = _jobEmployeeRepository.GetJobEmployeeFromDB(id);
-//     var jobEmployeeVM = _mapper.Map<DetailsJobEmployeeVM>(jobEmployee);
-//     return jobEmployeeVM;
-// }
-
-// public async Task EditJobEmployeeAsync(EditJobEmployeeVM model)
-// {
-//     var jobEmployee = _mapper.Map<JobEmployee>(model);
-//     await _jobEmployeeRepository.UpdateAsync(jobEmployee);
-// }

@@ -1,6 +1,7 @@
 using FluentValidation;
+using OptiFabricMVC.Application.ViewModels.ProductsVM;
 
-namespace OptiFabricMVC.Application.ViewModels.ProductsVM;
+namespace OptiFabricMVC.Application.Validators.ProductV;
 
 public class BaseProductValidator<T> : AbstractValidator<T> where T : BaseProductVM
 {

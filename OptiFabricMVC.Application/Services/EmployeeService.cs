@@ -51,10 +51,9 @@ public class EmployeeService: IEmployeeService
 
     }
 
-    public EmployeeForListVM GetEmployeeDetail(string id)
+    public async Task<EmployeeForListVM> GetEmployeeDetail(string id)
     {
-        var employee = _EmployeeRepository.GetEmployee(id);
-        //var emp = _mapper.Map<EmployeeDetailsVM>(employee);
+        var employee =await _EmployeeRepository.GetEmployee(id);
         var emp = _mapper.Map<EmployeeForListVM>(employee);
         return emp;
     }

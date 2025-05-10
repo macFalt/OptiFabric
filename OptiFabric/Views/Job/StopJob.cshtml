@@ -11,6 +11,8 @@
         <form asp-action="StopJob">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="JobId" />
+            <input type="hidden" asp-for="OperationId" />
+            
 
             <div class="form-group">
                 <label asp-for="EmployeeComments" class="control-label">Komentarz</label>

@@ -62,11 +62,11 @@
                         {
                             @if (isCurrentUserAssigned)
                             {
-                                @Html.ActionLink("Zakończ", "StopJob", new { id = operation.Id, JobId=operation.JobId })
+                                @Html.ActionLink("Zakończ", "StopJob", new { operationId = operation.Id, jobId=operation.JobId })
                             }
                             else
                             {
-                                @Html.ActionLink("Rozpocznij", "StartJob", new { id = operation.Id, JobId=operation.JobId })
+                                @Html.ActionLink("Rozpocznij", "StartJob", new { operationId = operation.Id, jobId=operation.JobId })
 
                             }
 
@@ -74,7 +74,6 @@
                         @if (User.IsInRole("Manager"))
                         {
                         <td>
-                            @* @Html.ActionLink("Edytuj", "EditOperation", new { id = operation.Id, opid=operation.OperationPatternId }) *@
                             @Html.ActionLink("Szczegóły", "ListJobEmployee", new { operationId = operation.Id })
 
                         </td>

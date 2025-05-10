@@ -12,4 +12,3 @@ public class MachineDetailsVM: BaseMachineVM, IMapFrom<Machine>
     }
 }
 
-public class MachineDetailsVMValidator: BaseMachineValidator<MachineDetailsVM>{}

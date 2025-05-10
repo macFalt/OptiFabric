@@ -13,7 +13,6 @@ public class EditMachineVM: BaseMachineVM, IMapFrom<Machine>
     }
 }
 
-public class EditMachineVMValidator : BaseMachineValidator<EditMachineVM>{}
 
 
 

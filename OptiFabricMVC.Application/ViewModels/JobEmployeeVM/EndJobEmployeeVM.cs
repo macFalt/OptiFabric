@@ -22,11 +22,8 @@ public class EndJobEmployeeVM : IMapFrom<JobEmployee>
 
     public int JobId { get; set; }
     
-    // public string CurrentWorkerId { get; set; } // ID aktualnego pracownika
-    // public ApplicationUser CurrentWorker { get; set; } // Referencja do pracownika
-    //
-    // public int JobId { get; set; }
-    // public Job Job { get; set; }
+    public int OperationId { get; set; }
+    
     public void ConfigureMapping(Profile profile)
     {
         profile.CreateMap<JobEmployee, EndJobEmployeeVM>().ReverseMap();

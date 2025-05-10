@@ -13,6 +13,10 @@ public interface IMachineService
     Task DeleteMachineAsync(int id);
     Task<ListMachinesVM> GetAllMachines(int pageSize, int pageNo, string searchString);
     Task<EditMachineVM> GetEditDetailsAsync(int id);
+
+    Task<bool> IsMachineBusyAsync(int machineId);
+    Task<bool> IsMachineBrokenAsync(int machineId);
+
 }
 
 

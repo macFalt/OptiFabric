@@ -14,4 +14,3 @@ public class EditProductVM: BaseProductVM, IMapFrom<Product>
     }
 }
 
-public class EditProductVmValidation: BaseProductValidator<EditProductVM>{}

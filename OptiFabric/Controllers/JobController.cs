@@ -1,7 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OptiFabricMVC.Application.Interfaces;
+using OptiFabricMVC.Application.Mapping;
 using OptiFabricMVC.Application.Services;
 using OptiFabricMVC.Application.ViewModels.JobEmployeeVM;
 using OptiFabricMVC.Application.ViewModels.JobVM;
@@ -19,9 +21,11 @@ public class JobController : Controller
     private readonly IMachineService _machineService;
     private readonly IOperationService _operationService;
     private readonly IJobEmployeeService _jobEmployeeService;
+    private readonly IMapper _mapper;
 
     public JobController(IJobService jobService, IProductService productService,
-        UserManager<ApplicationUser> userManager, IMachineService machineService, IOperationService operationService, IJobEmployeeService jobEmployeeService)
+        UserManager<ApplicationUser> userManager, IMachineService machineService, IOperationService operationService, IJobEmployeeService jobEmployeeService
+        , IMapper mapper)
     {
         _jobService = jobService;
         _productService = productService;
@@ -29,6 +33,7 @@ public class JobController : Controller
         _machineService = machineService;
         _operationService = operationService;
         _jobEmployeeService = jobEmployeeService;
+        _mapper = mapper;
     }
 
     //*************************************************
@@ -99,49 +104,55 @@ public class JobController : Controller
 
     
     [HttpGet]
-    public async Task<IActionResult> StartJob(int jobId, int pageSize = 10, int pageNo = 1, string searchString = "")
+    public async Task<IActionResult> StartJob(int operationId,int jobId, int pageSize = 10, int pageNo = 1, string searchString = "")
     {
         var model = new MachineSelectionVM();
         var listMachines = await _machineService.GetAllMachines(pageSize, pageNo, searchString);
         model.MachinesForListVms = listMachines.MachinesForListVms;
         model.JobId = jobId;
+        model.OperationId = operationId;
         return View(model);
     }
 
 
     [HttpPost]
-    public async Task<IActionResult> StartJob(int id, int selectedMachineId, int JobId)
+    public async Task<IActionResult> StartJob(int operationId, int selectedMachineId, int jobId)
     {
+
         try
         {
             var data = DateTime.Now;
             var userId = _userManager.GetUserId(User);
-            var jobId=JobId;
-            await _jobEmployeeService.StartJobEmployee2(data, userId, id, selectedMachineId, jobId);
+            await _jobEmployeeService.StartJobEmployeeAsync(data, userId, operationId, selectedMachineId, jobId);
             return RedirectToAction("ShowOperationList", new { JobId = jobId });
         }
         catch (InvalidOperationException ex)
         {
             TempData["ErrorMessage"] = ex.Message;
-            return RedirectToAction("StartJob", new { jobId = JobId });
+            return RedirectToAction("StartJob", new { jobId = jobId });
         }
     }
 
     [HttpGet]
-    public IActionResult StopJob(int JobId)
+    public IActionResult StopJob(int jobId,int operationId)
     {
         var model = new EndJobEmployeeVM();
-        model.JobId = JobId;
+        model.JobId = jobId;
+        model.OperationId = operationId;
         return View(model);
     }
 
     [HttpPost]
-    public async  Task<IActionResult> StopJob(EndJobEmployeeVM model, int id)
+    public async  Task<IActionResult> StopJob(EndJobEmployeeVM model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
         var data = DateTime.Now;
         var userId = _userManager.GetUserId(User);
         model.EndTime = data;
-        await _jobEmployeeService.StopJobEmployee(model, data, userId, id);
+        await _jobEmployeeService.StopJobEmployeeAsync(model, userId);
         return RedirectToAction("ShowOperationList", new { JobId = model.JobId });
     }
 
@@ -155,16 +166,20 @@ public class JobController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> EditJobEmployee(int id,int operationId)
+    public async Task<IActionResult> EditJobEmployee(int id)
     {
-        var model = await _jobEmployeeService.GetJobEmployeeDetailsAsync(id);
+        var details = await _jobEmployeeService.GetJobEmployeeDetailsAsync(id);
+        var model = _mapper.Map<EditJobEmployeeVM>(details);
         return View(model);
     }
 
     [HttpPost]
     public async Task<IActionResult> EditJobEmployee(EditJobEmployeeVM model)
     {
-        
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
         await _jobEmployeeService.EditJobEmployee(model);
         return RedirectToAction("ShowOperationList", new { JobId = model.JobId });
     }

@@ -17,5 +17,9 @@ public class BaseJobValidator<T> : AbstractValidator<T> where T : BaseJobVM
             .WithMessage("Wartości muszą być dodatnie lub równe 0");
         RuleFor(x=>x.Description)
             .NotEmpty().WithMessage("Pole 'Nazwa' jest wymagane");
+        RuleFor(x => x)
+            .Must(x => x.TotalCompletedQuantity + x.TotalMissingQuantity <= x.RequiredQuantity)
+            .WithMessage("Suma zakończonych i brakujących nie może przekraczać wymaganego nakładu.");
+
     }
 }

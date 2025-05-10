@@ -5,8 +5,8 @@ namespace OptiFabricMVC.Domain.Interfaces;
 
 public interface IMachinesRepository : IGenericRepository<Machine,int>
 {
-    bool IsMachineBusy(int selectedMachineId);
-    bool IsMachineBroken(int selectedMachineId);
+    // bool IsMachineBusy(int selectedMachineId);
+    // bool IsMachineBroken(int selectedMachineId);
 
 }
 

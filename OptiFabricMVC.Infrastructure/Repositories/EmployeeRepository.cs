@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using OptiFabricMVC.Domain.Interfaces;
 using OptiFabricMVC.Domain.Model;
 
@@ -36,9 +37,9 @@ public class EmployeeRepository: IEmployeeRepository
         return employeesList;
     }
 
-    public ApplicationUser GetEmployee(string id)
+    public async Task<ApplicationUser> GetEmployee(string id)
     {
-        var employee = _context.ApplicationUsers.FirstOrDefault(e => e.Id == id);
+        var employee =await _context.ApplicationUsers.FirstOrDefaultAsync(e => e.Id == id);
         return employee;
     }
 

@@ -74,9 +74,9 @@ public class EmployeeControler : Controller
     }
 
 
-    public IActionResult Details(string id)
+    public async Task<IActionResult> Details(string id)
     {
-        var employee = _employeeService.GetEmployeeDetail(id);
+        var employee = await _employeeService.GetEmployeeDetail(id);
         
         return View(employee);
     }
@@ -91,7 +91,7 @@ public class EmployeeControler : Controller
     public async Task<IActionResult> EditEmployee(string id)
     {
         var roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
-        var employee = _employeeService.GetEmployeeDetail(id);
+        var employee =await _employeeService.GetEmployeeDetail(id);
             var user = await _userManager.FindByIdAsync(employee.Id);
             if (user != null)
             {
