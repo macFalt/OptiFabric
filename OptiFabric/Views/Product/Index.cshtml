@@ -16,6 +16,14 @@
         <input type="text" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
         <input type="submit" value="Wyszukaj"/>
     </div>
+        <select name="sortOrder" onchange="this.form.submit()">
+            <option value="">Sortuj według</option>
+            <option value="name_asc">Nazwa A-Z</option>
+            <option value="name_desc">Nazwa Z-A</option>
+            <option value="material_asc">Materiału</option>
+        </select>
+    
+
     <div class="row">
         <table class="table">
             <thead>

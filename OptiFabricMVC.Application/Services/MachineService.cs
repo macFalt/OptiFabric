@@ -57,15 +57,26 @@ public class MachineService : IMachineService
         await _machinesRepository.DeleteAsync(id);
     }
 
-    public async Task<ListMachinesVM> GetAllMachines(int pageSize, int pageNo, string searchString)
+    public async Task<ListMachinesVM> GetAllMachines(int pageSize, int pageNo, string searchString,string sortOrder)
     {
         var query = _machinesRepository.GetAll()
             .Where(m => m.Name.StartsWith(searchString));
 
+        query = sortOrder switch
+        {
+            "name_asc" => query.OrderBy(m => m.Name),
+            "name_desc" => query.OrderByDescending(m => m.Name),
+            "type_asc" => query.OrderBy(m => m.Type),
+            "type_desc" => query.OrderByDescending(m => m.Type),
+            "status_asc" => query.OrderBy(m => m.Status),
+            "status_desc" => query.OrderByDescending(m => m.Status),
+            _ => query.OrderBy(m => m.Name)
+        };
+
         var count = await query.CountAsync();
 
         var machinesToShow = await query
-            .OrderBy(m => m.Name)
+            //.OrderBy(m => m.Name)
             .Skip((pageNo - 1) * pageSize)
             .Take(pageSize)
             .ProjectTo<MachinesForListVM>(_mapper.ConfigurationProvider)

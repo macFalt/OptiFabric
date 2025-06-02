@@ -23,9 +23,9 @@ public class ProductController : Controller
     }
     
     
-    public async Task<IActionResult> Index(int pageSize = 10, int pageNo = 1, string searchString = "")
+    public async Task<IActionResult> Index(string sortOrder,int pageSize = 10, int pageNo = 1, string searchString = "")
     {
-        var model = await _productService.GetAllProductsAsync(pageSize, pageNo, searchString);
+        var model = await _productService.GetAllProductsAsync(pageSize, pageNo, searchString,sortOrder);
         return View(model);
     }
 

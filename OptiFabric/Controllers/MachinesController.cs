@@ -12,9 +12,9 @@ public class MachinesController : Controller
     {
         _machineService = machineService;
     }
-    public async Task<IActionResult> Index(int pageSize = 10, int pageNo = 1, string searchString = "")
+    public async Task<IActionResult> Index(string sortOrder,int pageSize = 10, int pageNo = 1, string searchString = "")
     {
-        return View( await _machineService.GetAllMachines(pageSize,pageNo,searchString));
+        return View( await _machineService.GetAllMachines(pageSize,pageNo,searchString,sortOrder));
     }
 
     [HttpGet]

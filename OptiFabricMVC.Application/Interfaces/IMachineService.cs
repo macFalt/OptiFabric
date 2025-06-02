@@ -11,7 +11,7 @@ public interface IMachineService
     Task<MachineDetailsVM> GetDetailsAsync(int id);
     Task EditMachineAsync(EditMachineVM model);
     Task DeleteMachineAsync(int id);
-    Task<ListMachinesVM> GetAllMachines(int pageSize, int pageNo, string searchString);
+    Task<ListMachinesVM> GetAllMachines(int pageSize, int pageNo, string searchString,string sortOrder);
     Task<EditMachineVM> GetEditDetailsAsync(int id);
 
     Task<bool> IsMachineBusyAsync(int machineId);

@@ -51,15 +51,24 @@ public class ProductService: IProductService
         await _productRepository.UpdateAsync(product);
     }
 
-    public async Task<ListProductVM> GetAllProductsAsync(int pageSize, int pageNo, string searchString)
+    public async Task<ListProductVM> GetAllProductsAsync(int pageSize, int pageNo, string searchString, string sortOrder)
     {
         var query=_productRepository.GetAll()
             .Where(p=>p.Name.StartsWith(searchString));
         
+            query = sortOrder switch
+            {
+                "name_asc" => query.OrderBy(p => p.Name),
+                "name_desc" => query.OrderByDescending(p => p.Name),
+                "material_asc" => query.OrderBy(p => p.Material),
+                _ => query.OrderBy(p => p.Name)
+            };
+
+            
         var count = await query.CountAsync();
         
         var productToShow = await query
-            .OrderBy(m => m.Name)
+            //.OrderBy(m => m.Name)
             .Skip((pageNo - 1) * pageSize)
             .Take(pageSize)
             .ProjectTo<ProductForListVM>(_mapper.ConfigurationProvider)
@@ -76,6 +85,30 @@ public class ProductService: IProductService
 
         return productList;
         
+    }
+
+    public async Task<ListProductVM> GetAllProductsToJobAsync(int pageSize, int pageNo, string searchString)
+    {
+        var query = _productRepository.GetAll();
+        
+        var count = await query.CountAsync();
+        
+        var productToShow = await query
+            .Skip((pageNo - 1) * pageSize)
+            .Take(pageSize)
+            .ProjectTo<ProductForListVM>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+        
+        var productList = new ListProductVM()
+        {
+            PageSize = pageSize,
+            CurrentPage = pageNo,
+            SearchString = searchString,
+            ProductsListVM = productToShow,
+            Count = count
+        };
+
+        return productList;
     }
     
 

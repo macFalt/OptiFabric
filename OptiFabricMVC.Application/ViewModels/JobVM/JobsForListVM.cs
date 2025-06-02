@@ -19,13 +19,7 @@ public class JobsForListVM: BaseJobVM,  IMapFrom<Job>
     
 }
 
-public class JobForEditValidation : BaseJobValidator<JobsForListVM>
-{
-    public JobForEditValidation()
-    {
-        RuleFor(x => x.ProductId).NotEmpty();
-    }
-}
+
 
 
 

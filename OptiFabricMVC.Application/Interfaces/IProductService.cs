@@ -9,7 +9,9 @@ public interface IProductService
     Task<EditProductVM> GetEditDetailsAsync(int id);
     Task DeleteProductAsync(int id);
     Task EditProductAsync(EditProductVM model);
-    Task<ListProductVM> GetAllProductsAsync(int pageSize, int pageNo, string searchString);
+    Task<ListProductVM> GetAllProductsAsync(int pageSize, int pageNo, string searchString, string sortOrder);
+
+    Task<ListProductVM> GetAllProductsToJobAsync(int pageSize, int pageNo, string searchString);
 
 
 

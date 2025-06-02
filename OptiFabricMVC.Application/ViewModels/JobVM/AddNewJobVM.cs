@@ -14,7 +14,6 @@ public class AddNewJobVM: BaseJobVM, IMapFrom<Job>
     }
 }
 
-public class AddNewJobVMValidation : BaseJobValidator<AddNewJobVM>{}
 
 
 

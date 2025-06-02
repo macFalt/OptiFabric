@@ -32,6 +32,10 @@ public class OperationController : Controller
     [HttpPost]
     public async Task<IActionResult> AddOperationPattern(OperationPatternForListVM model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
         await _operationService.AddNewOperationPatternAsync(model);
         return RedirectToAction("ShowOperationList", new { ProductId = model.ProductId });
     }
@@ -47,6 +51,10 @@ public class OperationController : Controller
     [HttpPost]
     public async Task<IActionResult> EditOperation(OperationPatternForListVM model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
         await _operationService.EditOperationAsync(model);
         return RedirectToAction("ShowOperationList", new { productId = model.ProductId });
     }

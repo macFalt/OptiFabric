@@ -69,16 +69,3 @@ public class OperationRepository : GenericRepository<OperationPattern,int>, IOpe
 
 
 
-
-// public async Task<List<OperationPattern>> GetAllOperationsPatternFromDB(int ProductId)
-// {
-//     return await _context.OperationPatterns
-//         .Where(pr => pr.ProductId == ProductId)
-//         .AsNoTracking()
-//         .ToListAsync();
-// }
-
-// public void AddOperatonPatternToDB(OperationPattern operationPattern)
-// {
-//     _context.OperationPatterns.Add(operationPattern);
-//     _context.SaveChanges();    }

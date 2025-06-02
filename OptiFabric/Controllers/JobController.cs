@@ -53,7 +53,7 @@ public class JobController : Controller
     public async Task<IActionResult> AddJob(int pageSize = 10, int pageNo = 1, string searchString = "")
     {
         var model = new AddNewJobVM();
-        var listProduct = await _productService.GetAllProductsAsync(pageSize, pageNo, searchString);
+        var listProduct = await _productService.GetAllProductsToJobAsync(pageSize, pageNo, searchString);
         model.Products = listProduct.ProductsListVM;
         return View(model);
     }
@@ -63,7 +63,7 @@ public class JobController : Controller
     {
         if (!ModelState.IsValid)
         {
-            var listProduct = await _productService.GetAllProductsAsync(10,1,"");
+            var listProduct = await _productService.GetAllProductsToJobAsync(10,1,"");
             model.Products = listProduct.ProductsListVM;
 
             return View(model);
@@ -76,14 +76,19 @@ public class JobController : Controller
     public async Task<IActionResult> EditJob(int id, int pageSize = 10, int pageNo = 1, string searchString = "")
     {
         var job = await _jobService.GetSelectedJobAsync(id);
-        var listProduct = await _productService.GetAllProductsAsync(pageSize, pageNo, searchString);
-        job.Products = listProduct.ProductsListVM;
-        return View(job);
+        var model= _mapper.Map<EditJobVM>(job);
+        var listProduct = await _productService.GetAllProductsToJobAsync(pageSize, pageNo, searchString);
+        model.Products = listProduct.ProductsListVM;
+        return View(model);
     }
 
     [HttpPost]
     public async Task<IActionResult> EditJob(EditJobVM model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
         await _jobService.EditJobAsync(model);
         return RedirectToAction("Index");
     }
@@ -107,7 +112,8 @@ public class JobController : Controller
     public async Task<IActionResult> StartJob(int operationId,int jobId, int pageSize = 10, int pageNo = 1, string searchString = "")
     {
         var model = new MachineSelectionVM();
-        var listMachines = await _machineService.GetAllMachines(pageSize, pageNo, searchString);
+        var sortOrder = "";
+        var listMachines = await _machineService.GetAllMachines(pageSize, pageNo, searchString,sortOrder);
         model.MachinesForListVms = listMachines.MachinesForListVms;
         model.JobId = jobId;
         model.OperationId = operationId;

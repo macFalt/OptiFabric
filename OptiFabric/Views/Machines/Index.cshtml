@@ -17,6 +17,17 @@
         <input type="text" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
         <input type="submit" value="Wyszukaj"/>
     </div>
+    
+        <select name="sortOrder" onchange="this.form.submit()">
+            <option value="">Sortuj według</option>
+            <option value="name_asc">Nazwa od A-Z</option>
+            <option value="name_desc">Nazwa od Z-A</option>
+            <option value="type_asc">Typ rosnąco</option>
+            <option value="type_desc">Typ malejąco</option>
+            <option value="status_asc">Według statusu</option>
+            <option value="status_desc">Według statusu</option>
+        </select>
+    
     <div class="row">
         <table class="table">
             <thead>

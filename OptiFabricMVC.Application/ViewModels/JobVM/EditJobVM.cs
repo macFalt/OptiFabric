@@ -10,10 +10,10 @@ public class EditJobVM : BaseJobVM,  IMapFrom<Job>
     public void ConfigureMapping(Profile profile)
     {
         profile.CreateMap<Job, EditJobVM>().ReverseMap();
+        profile.CreateMap<AddNewJobVM, EditJobVM>().ReverseMap();
     }
 }
 
-public class EditJobVmValidation : BaseJobValidator<EditJobVM>{}
 
 
 

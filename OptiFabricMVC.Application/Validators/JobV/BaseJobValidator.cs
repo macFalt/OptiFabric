@@ -1,6 +1,7 @@
 using FluentValidation;
+using OptiFabricMVC.Application.ViewModels.JobVM;
 
-namespace OptiFabricMVC.Application.ViewModels.JobVM;
+namespace OptiFabricMVC.Application.Validators.JobV;
 
 public class BaseJobValidator<T> : AbstractValidator<T> where T : BaseJobVM
 {
@@ -19,7 +20,7 @@ public class BaseJobValidator<T> : AbstractValidator<T> where T : BaseJobVM
             .NotEmpty().WithMessage("Pole 'Nazwa' jest wymagane");
         RuleFor(x => x)
             .Must(x => x.TotalCompletedQuantity + x.TotalMissingQuantity <= x.RequiredQuantity)
-            .WithMessage("Suma zakończonych i brakujących nie może przekraczać wymaganego nakładu.");
+            .WithMessage("Suma dobrych i braków nie może przekraczać wymaganego nakładu.");
 
     }
 }
