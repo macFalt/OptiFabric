@@ -8,8 +8,9 @@
 @if (User.IsInRole("Manager"))
 {
     <p>
-        <a asp-action="AddJob">Dodaj nowe zlecenie</a>
-    </p>
+        <a asp-action="AddJob" class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> Dodaj nowe zlecenie
+        </a>    </p>
 }
 <form asp-action="Index" asp-controller="Job" method="get">
     <div class="row">

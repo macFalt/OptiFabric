@@ -10,8 +10,12 @@
 @if (User.Identity.IsAuthenticated)
 {
     <p>
-        <a asp-action="AddEmployee">Dodaj nowego pracownika</a>
-        <a asp-action="AddRole">Dodaj nowe stanowisko</a>
+        <a asp-action="AddEmployee" class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> Dodaj nowego pracownika
+        </a>
+        <a asp-action="AddRole" class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> Dodaj nową rolę
+        </a>
     </p>
 }
 <form asp-action="Index" asp-controller="EmployeeControler" method="get">

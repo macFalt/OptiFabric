@@ -8,10 +8,11 @@
 <h2>title</h2>
 @if (User.IsInRole("Manager"))
 {
-    <p>
-        <a asp-action="AddMachine">Dodaj nową maszyne</a>
-    </p>
+    <a asp-action="AddMachine" class="btn btn-primary mb-3">
+        <i class="fas fa-plus"></i> Dodaj nową maszynę
+    </a>
 }
+
 <form asp-action="Index" asp-controller="Machines" method="get">
     <div class="row">
         <input type="text" asp-for="SearchString" name="searchString" id="searchString" value="@Model.SearchString"/>
